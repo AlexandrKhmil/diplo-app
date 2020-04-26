@@ -1,0 +1,9 @@
+img {
+  width: 100%;
+  object-fit: contain;
+  transition: all 0.5s ease-out;
+}
+
+img:hover {
+  box-shadow: 5px 5px 20px 0px rgba(0,0,0,0.5);
+}
