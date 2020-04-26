@@ -1,0 +1,13 @@
+DECLARE
+  is_exist boolean;
+BEGIN
+  is_exist = (SELECT COUNT(1) > 0
+               FROM account AS a
+               WHERE a.email = email);
+  IF (is_exist) THEN
+    RAISE 'User with this email exists!';
+  END IF;
+  INSERT INTO account (email, password)
+    VALUES (email, password);
+  RETURN currval('account_id_seq');
+END;

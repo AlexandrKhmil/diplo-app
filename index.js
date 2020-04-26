@@ -3,6 +3,10 @@ const {spawn} = require('child_process');
 const app = express();
 const port = 3000;
 
+app.use(express.json({ extended: true }));
+
+app.use('/api/account', require('./routes/account.routes'));
+
 app.get('/1', (req, res) => {
   var dataToSend;
   // spawn new child process to call the python script
