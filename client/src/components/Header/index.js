@@ -1,14 +1,17 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
+import { connect } from 'react-redux';
+import { modalLoginOpen } from '../../actions/modal';
 
-export default function Header() {
+function Header(props) {
+  const { modalLoginOpen } = props;
+
   const pagesList = [
     { title: 'Home', to: '/' },
     { title: 'About', to: '/about' },
   ];
   const userList = [
-    { title: 'Login', to: '/login' },
-    { title: 'Register', to: '/register' },
+    { title: 'Login', action: modalLoginOpen }
   ]
   return (
     <header>
@@ -18,14 +21,21 @@ export default function Header() {
             <ul className="navbar-nav mr-auto">
               {pagesList.map((link) => 
                 <li className="nav-item" key={link.title.toString()}>
-                  <NavLink className="nav-link" exact to={link.to}>{link.title}</NavLink>
+                  <NavLink className="nav-link" exact to={link.to}>
+                    {link.title}
+                  </NavLink>
                 </li>
               )} 
             </ul>
             <ul className="navbar-nav ml-auto">
-              {userList.map((link) => 
-                <li className="nav-item" key={link.title.toString()}>
-                  <NavLink className="nav-link" to={link.to}>{link.title}</NavLink>
+              {userList.map((btn) => 
+                <li className="nav-item" key={btn.title.toString()}>
+                  <button
+                    className="nav-link btn btn-link"
+                    onClick = {btn.action}
+                  >
+                    {btn.title}
+                  </button>
                 </li>
               )} 
             </ul>
@@ -35,3 +45,13 @@ export default function Header() {
     </header>
   )
 }
+
+const mapStateToProps = (state) => ({
+  
+})
+
+const mapDispatchToProps = {
+  modalLoginOpen
+}
+
+export default connect(() => mapStateToProps, mapDispatchToProps)(Header);

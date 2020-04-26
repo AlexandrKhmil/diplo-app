@@ -23,7 +23,7 @@ export default function Home() {
         <h1 className="mb-3">List of algorithms</h1>  
         <div className="row">
           {algorithmsList.map(algorithm => 
-            <div className="col-sm-6">
+            <div key={algorithm.title} className="col-sm-6">
               <AlgorithmCard
                 title={algorithm.title}
                 link={`algorithm/${algorithm.link}`}
