@@ -39,6 +39,7 @@ router.post('/login', [
   ],
   async (req, res) => {
     try {
+      console.log(111);
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(500).json({ errors: errors.array() });
@@ -66,7 +67,7 @@ router.post('/login', [
         { id: result.id },
         jwtSecret,
         { expiresIn: '1h' }
-      );
+      ); 
       return res.status(200).json({ token, email });
     } catch(e) {
       return res.status(500).json({ error: "Error" });

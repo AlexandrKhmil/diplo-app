@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
-import Modal from '../Modal';
 import { connect } from 'react-redux';
-import { modalLoginClose } from '../../actions/modal';
-import { login } from '../../actions/account';
+import Modal from '../Modal';
+import { modalRegisterClose } from '../../actions/modal'
 
-const Login = (props) => {
+const Register = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordRepeat, setPasswordRepeat] = useState('');
   const onSubmit = (e) => {
     e.preventDefault();
-    props.login({ email, password }); 
   };
-
   return (
     <Modal
-      status={props.status}
-      close={props.modalLoginClose}
-      title="Login"
+      status={props.register}
+      close={props.modalRegisterClose}
+      title="Register"
     >
-      <form onSubmit={(e) => onSubmit(e)}>
+      <form onSubmit={onSubmit}>
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
@@ -27,7 +25,16 @@ const Login = (props) => {
             name="email"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
-            disabled={props.isLoading}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            className="form-control"
+            name="password"
+            onChange={(e) => setPasswordRepeat(e.target.value)}
+            value={password}
           />
         </div>
         <div className="form-group">
@@ -37,35 +44,31 @@ const Login = (props) => {
             className="form-control"
             name="password"
             onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            disabled={props.isLoading}
+            value={passwordRepeat}
           />
         </div>
         <div className="form-group d-flex justify-content-end mb-0">
-          <button 
+          <button
             className="btn btn-primary"
-            disabled={props.isLoading} 
+            type="submit"
           >
             Enter
           </button>
         </div>
       </form>
-    </Modal> 
+    </Modal>
   )
 }
 
 const mapStateToProps = (state) => ({
-  status: state.modal.login,
-  isAuth: state.account.isAuth,
-  isLoading: state.account.isLoading,
+  register: state.modal.register
 })
 
 const mapDispatchToProps = {
-  modalLoginClose, 
-  login,
-};
+  modalRegisterClose
+}
 
 export default connect(
   (state) => mapStateToProps, 
   mapDispatchToProps
-)(Login);
+)(Register);

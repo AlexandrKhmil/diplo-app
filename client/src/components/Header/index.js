@@ -1,18 +1,28 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
 import { connect } from 'react-redux';
-import { modalLoginOpen } from '../../actions/modal';
+import { logout } from '../../actions/account';
+import { modalLoginOpen, modalRegisterOpen } from '../../actions/modal';
 
 function Header(props) {
-  const { modalLoginOpen } = props;
-
-  const pagesList = [
+  let pagesList = [
     { title: 'Home', to: '/' },
     { title: 'About', to: '/about' },
   ];
-  const userList = [
-    { title: 'Login', action: modalLoginOpen }
-  ]
+
+  pagesList = props.isAuth 
+    ? [...pagesList, { title: 'Account', to: '/account' }] 
+    : pagesList;
+  
+  const userList = !props.isAuth
+  ? [
+      { title: 'Login', action: props.modalLoginOpen },
+      { title: 'Register', action: props.modalRegisterOpen },
+    ]
+  : [
+      { title: 'Logout', action: props.logout, className: "btn-info" },
+    ]
+
   return (
     <header>
       <nav className="navbar navbar-expand navbar-dark bg-primary">
@@ -31,7 +41,8 @@ function Header(props) {
               {userList.map((btn) => 
                 <li className="nav-item" key={btn.title.toString()}>
                   <button
-                    className="nav-link btn btn-link"
+                    className={`nav-link btn 
+                      ${btn.className ? btn.className : 'btn-link'}`}
                     onClick = {btn.action}
                   >
                     {btn.title}
@@ -47,11 +58,13 @@ function Header(props) {
 }
 
 const mapStateToProps = (state) => ({
-  
+  isAuth: state.account.isAuth,
 })
 
 const mapDispatchToProps = {
-  modalLoginOpen
+  modalLoginOpen,
+  modalRegisterOpen,
+  logout,
 }
 
 export default connect(() => mapStateToProps, mapDispatchToProps)(Header);
