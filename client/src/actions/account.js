@@ -10,17 +10,19 @@ import {
   ACCOUNT_LOGIN_SUCCESS,
   ACCOUNT_LOGIN_FAIL,
 
-  ACCOUNT_REGISTER,
+  ACCOUNT_REGISTER_LOADING,
+  ACCOUNT_REGISTER_SUCCESS,
+  ACCOUNT_REGISTER_FAIL,
+
   ACCOUNT_LOGOUT,
 
   MODAL_LOGIN_CLOSE,
-  
 } from './types';
 
 export const auth = () => (dispatch, getState) => {
   dispatch({ type: ACCOUNT_AUTH_LOADING });
   const token = getState().account.token;
-  const { config, body } = jsonRequest({ token });
+  const { config } = jsonRequest({ token });
   axios
     .get('api/account/auth', config)
     .then(res => dispatch({ type: ACCOUNT_AUTH_SUCCESS, payload: res.data }))
@@ -31,8 +33,8 @@ export const auth = () => (dispatch, getState) => {
 };
 
 export const login = ({ email, password }) => (dispatch) => {
-  const { body, config } = jsonRequest(null, { email, password });
   dispatch({ type: ACCOUNT_LOGIN_LOADING });
+  const { body, config } = jsonRequest(null, { email, password });
   axios
     .post('/api/account/login', body, config)
     .then(res => {
@@ -43,10 +45,12 @@ export const login = ({ email, password }) => (dispatch) => {
       dispatch({ type: ACCOUNT_LOGIN_FAIL });
       errorAlert(error)(dispatch);
     });
-}
+};
 
-export const register = () => dispatch => {};
+export const register = ({ email, password }) => dispatch => {
+  dispatch({ type: ACCOUNT_REGISTER_LOADING });
+};
 
 export const logout = () => dispatch => dispatch({
   type: ACCOUNT_LOGOUT
-})
+});

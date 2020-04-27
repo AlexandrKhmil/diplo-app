@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Modal from '../Modal';
-import { modalRegisterClose } from '../../actions/modal'
+import { modalRegisterClose } from '../../actions/modal';
+import { register } from '../../actions/account';
 
 const Register = (props) => {
   const [email, setEmail] = useState('');
@@ -9,10 +10,11 @@ const Register = (props) => {
   const [passwordRepeat, setPasswordRepeat] = useState('');
   const onSubmit = (e) => {
     e.preventDefault();
+    props.register({ email, password });
   };
   return (
     <Modal
-      status={props.register}
+      status={props.status}
       close={props.modalRegisterClose}
       title="Register"
     >
@@ -33,17 +35,17 @@ const Register = (props) => {
             type="password"
             className="form-control"
             name="password"
-            onChange={(e) => setPasswordRepeat(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             value={password}
           />
         </div>
         <div className="form-group">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="passwordRepeat">Password Repeat</label>
           <input
             type="password"
             className="form-control"
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
+            name="passwordRepeat"
+            onChange={(e) => setPasswordRepeat(e.target.value)}
             value={passwordRepeat}
           />
         </div>
@@ -61,11 +63,12 @@ const Register = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  register: state.modal.register
+  status: state.modal.register
 })
 
 const mapDispatchToProps = {
-  modalRegisterClose
+  modalRegisterClose,
+  register,
 }
 
 export default connect(
