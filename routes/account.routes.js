@@ -34,15 +34,17 @@ router.get('/auth', account,
 
 // POST `api/account/login`
 router.post('/login', [
-    body('email', 'Wrong email').normalizeEmail().isEmail(),
-    body('password', 'Wrong password').isLength({ min: 5 })
+    body('email', 'Некорректный email!').normalizeEmail().isEmail(),
+    body('password', 'Некорректный пароль!').isLength({ min: 5 })
   ],
   async (req, res) => {
     try {
-      console.log(111);
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(500).json({ errors: errors.array() });
+        return res.status(500).json({ 
+          msg: 'Ошибка заполнения полей!',
+          errors: errors.array(),
+        });
       }
 
       const { email, password } = req.body;
@@ -55,12 +57,12 @@ router.post('/login', [
         .then((data) => data)
         .catch((error) => ({ error }));
       if (result.error) {
-        return res.status(500).json({ error: result.error });
+        return res.status(500).json({ msg: 'Пользователь отсутствует!' });
       }
 
       const isMatch = await bcrypt.compare(password, result.password)
       if (!isMatch) {
-        return res.status(500).json({ message: 'Wrong password' });
+        return res.status(500).json({ msg: 'Неверный пароль!' });
       }
 
       const token = jwt.sign(
@@ -70,7 +72,7 @@ router.post('/login', [
       ); 
       return res.status(200).json({ token, email });
     } catch(e) {
-      return res.status(500).json({ error: "Error" });
+      return res.status(500).json({ msg: "Ошибка авторизации!" });
     }
   }
 );

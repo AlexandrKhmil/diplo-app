@@ -8,12 +8,12 @@ module.exports = (req, res, next) => {
   try {
     const token = req.headers.token;
     if (!token) {
-      return res.status(500).json({ message: 'Wrong token' });
+      return res.status(500).json({ msg: 'Ошибка токена!' });
     }
     const decoded = jwt.verify(token, config.get('jwtSecret'));
     req.token = decoded;
     next();
   } catch (e) {
-    res.status(500).json({ message: 'Wrong token' });
+    res.status(500).json({ msg: 'Ошибка токена!' });
   }
 }
