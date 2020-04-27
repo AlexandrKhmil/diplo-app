@@ -3,4 +3,4 @@ export const jsonRequest = (headers, body) => {
   config.headers = { ...config.headers, ...headers };
   body = body && JSON.stringify(body);
   return { config, body };
-}
+};

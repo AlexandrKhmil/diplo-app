@@ -16,7 +16,7 @@ const algorithmsList = [
   },
 ]
 
-export default function Home() {
+const Home = () => {
   return (
     <main>
       <div className="container mt-5">
@@ -35,5 +35,7 @@ export default function Home() {
         </div> 
       </div>
     </main>
-  )
-}
+  );
+};
+
+export default Home;

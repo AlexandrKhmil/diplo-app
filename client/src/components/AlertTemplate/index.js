@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AlertTemplate = ({ style, options, message, close }) => (
+const AlertTemplate = ({ style, message, close }) => (
   <div className="alert alert-dismissible alert-warning" style={style}>
     <h4 className="alert-heading">Ошибка!</h4>
     <p className="mb-0">{message}</p>

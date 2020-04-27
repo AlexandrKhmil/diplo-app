@@ -4,18 +4,18 @@ import { connect } from 'react-redux';
 import { modalLoginClose } from '../../actions/modal';
 import { login } from '../../actions/account';
 
-const Login = (props) => {
+const Login = ({ status, isLoading, modalLoginClose, login }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const onSubmit = (e) => {
     e.preventDefault();
-    props.login({ email, password }); 
+    login({ email, password }); 
   };
 
   return (
     <Modal
-      status={props.status}
-      close={props.modalLoginClose}
+      status={status}
+      close={modalLoginClose}
       title="Login"
     >
       <form onSubmit={(e) => onSubmit(e)}>
@@ -27,7 +27,7 @@ const Login = (props) => {
             name="email"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
-            disabled={props.isLoading}
+            disabled={isLoading}
           />
         </div>
         <div className="form-group">
@@ -38,27 +38,26 @@ const Login = (props) => {
             name="password"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
-            disabled={props.isLoading}
+            disabled={isLoading}
           />
         </div>
         <div className="form-group d-flex justify-content-end mb-0">
           <button 
             className="btn btn-primary"
-            disabled={props.isLoading} 
+            disabled={isLoading} 
           >
             Enter
           </button>
         </div>
       </form>
     </Modal> 
-  )
-}
+  );
+};
 
 const mapStateToProps = (state) => ({
   status: state.modal.login,
-  isAuth: state.account.isAuth,
   isLoading: state.account.isLoading,
-})
+});
 
 const mapDispatchToProps = {
   modalLoginClose, 
@@ -66,6 +65,6 @@ const mapDispatchToProps = {
 };
 
 export default connect(
-  (state) => mapStateToProps, 
+  mapStateToProps, 
   mapDispatchToProps
 )(Login);

@@ -2,7 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const config = require('config');
 const jwtSecret = config.get('jwtSecret');
-const { head, body, validationResult } = require('express-validator');
+const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('../connection');
@@ -60,7 +60,7 @@ router.post('/login', [
         return res.status(500).json({ msg: 'Пользователь отсутствует!' });
       }
 
-      const isMatch = await bcrypt.compare(password, result.password)
+      const isMatch = await bcrypt.compare(password, result.password);
       if (!isMatch) {
         return res.status(500).json({ msg: 'Неверный пароль!' });
       }
@@ -83,10 +83,13 @@ router.post('/register', [
     body('password', 'Wrong password').isLength({ min: 5 }),
   ],
   async (req, res) => {
-    try { 
+    try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(500).json({ errors: errors.array() });
+        return res.status(500).json({
+          msg: 'Ошибка заполнения полей!',
+          errors: errors.array(),
+        });
       }
 
       const { email, password } = req.body; 
@@ -95,7 +98,9 @@ router.post('/register', [
         .then(data => data[0].account_add)
         .catch(error => ({ error }));
       if (result.error) {
-        return res.status(500).json({ error: result.error });
+        return res.status(500).json({ 
+          msg: "Пользователь с таким email уже существует!"
+        });
       }
 
       const token = jwt.sign(
@@ -105,7 +110,7 @@ router.post('/register', [
       );
       return res.status(200).json({ token, email }); 
     } catch (e) {
-      return res.status(500).json({ error: "Error" });
+      return res.status(500).json({ msg: "Ошибка регистрации!" });
     }
   }
 );

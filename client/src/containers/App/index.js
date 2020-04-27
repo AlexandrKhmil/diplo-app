@@ -21,19 +21,17 @@ import Home from '../Home';
 import About from '../About';
 import Algorithm from '../Algorithm';
 
-const alertOptions = {
-  position: positions.TOP_CENTER,
-  timeout: 5000,
-  transition: transitions.FADE,
-  containerStyle: {
-    zIndex: 1070
-  },
-}
+const App = ({ token, auth }) => {
+  useEffect(() => token && auth());
 
-function App(props) {
-  useEffect(() => {
-    props.token && props.auth();
-  });
+  const alertOptions = {
+    position: positions.TOP_CENTER,
+    timeout: 5000,
+    transition: transitions.FADE,
+    containerStyle: {
+      zIndex: 1070
+    },
+  };
 
   return (
     <AlertProvider template={AlertTemplate} {...alertOptions}>
@@ -50,7 +48,7 @@ function App(props) {
       </Router>
     </AlertProvider>
   );
-}
+};
 
 const mapStateToProps = (state) => ({
   token: state.account.token,
@@ -60,4 +58,7 @@ const mapDispatchToProps = {
   auth,
 };
 
-export default connect((state) => mapStateToProps, mapDispatchToProps)(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

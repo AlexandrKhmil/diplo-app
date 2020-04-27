@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import styles from './styles.module.css';
 
-const Modal = (props) => {
-  const ref = React.createRef();
+const Modal = ({ status, title, children, footer, close }) => {
+  const ref = createRef();
+  const backdropClose = (e) => e.target === ref.current && close();
   return (
     <CSSTransition
-      in={props.status}
+      in={status}
       timeout={200}
       classNames={{
         enter: styles.enter,
@@ -19,16 +20,16 @@ const Modal = (props) => {
       <div
         className={styles.modalBackdrop}
         ref={ref}
-        onClick={(e) => e.target === ref.current && props.close()}
+        onClick={backdropClose}
       >
         <div className="modal-dialog w-100">
           <div className="modal-content">
             <div className="modal-header">
-              {props.title &&
-                <h5 className="modal-title">{props.title}</h5>
+              {title &&
+                <h5 className="modal-title">{title}</h5>
               }
               <button 
-                onClick={props.close}
+                onClick={close}
                 className="close"
                 aria-label="Close"
               >
@@ -36,18 +37,18 @@ const Modal = (props) => {
               </button>
             </div>
             <div className="modal-body">
-              {props.children}
+              {children}
             </div>
-            {props.footer &&
+            {footer &&
               <div className="modal-footer">
-                {props.footer}
+                {footer}
               </div>
             }
           </div>
         </div>
       </div>
     </CSSTransition>
-  )
-}
+  );
+};
 
 export default Modal;

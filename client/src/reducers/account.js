@@ -78,24 +78,26 @@ export default (state = initialState, { type, payload }) => {
       localStorage.setItem('token', payload.token);
       return { 
         ...state,
+        ...payload,
         isLoading: false,
         isAuth: false,
-      }
+      };
     }
     case ACCOUNT_REGISTER_FAIL: {
       return { 
         ...state,
-        ...payload,
         isLoading: false,
-        isAuth: true,
-      }
+        isAuth: false,
+      };
     }
 
-    case ACCOUNT_LOGOUT:
+    case ACCOUNT_LOGOUT: {
       localStorage.removeItem('token');
       return initialState;
+    }
 
-    default:
+    default: {
       return state;
+    } 
   }
 };

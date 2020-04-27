@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-export default function Algorithm() {
+const Algorithm = () => {
   return (
     <div>
-      This is algorithm
+      
     </div>
-  )
-}
+  );
+};
+
+export default Algorithm;
