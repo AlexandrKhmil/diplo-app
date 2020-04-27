@@ -27,11 +27,11 @@ export const auth = () => (dispatch, getState) => {
   const { config } = jsonRequest({ token });
   axios
     .get('api/account/auth', config)
-    .then(res => dispatch({ type: ACCOUNT_AUTH_SUCCESS, payload: res.data }))
-    .catch(error => {
+    .then((res) => dispatch({ type: ACCOUNT_AUTH_SUCCESS, payload: res.data }))
+    .catch((error) => {
       dispatch({ type: ACCOUNT_AUTH_FAIL });
-      errorAlert(error.response.data)(dispatch);
-    })
+      if (error.response) errorAlert(error.response.data)(dispatch);
+    });
 };
 
 // POST 'api/account/login'
@@ -40,13 +40,13 @@ export const login = ({ email, password }) => (dispatch) => {
   const { body, config } = jsonRequest(null, { email, password });
   axios
     .post('/api/account/login', body, config)
-    .then(res => {
+    .then((res) => {
       dispatch({ type: ACCOUNT_LOGIN_SUCCESS, payload: res.data });
       dispatch({ type: MODAL_LOGIN_CLOSE });
     })
-    .catch(error => {
+    .catch((error) => {
       dispatch({ type: ACCOUNT_LOGIN_FAIL });
-      errorAlert(error.response.data)(dispatch);
+      if (error.response) errorAlert(error.response.data)(dispatch);
     });
 };
 
@@ -65,7 +65,7 @@ export const register = ({ email, password }) => (dispatch) => {
     })
     .catch((error) => {
       dispatch({ type: ACCOUNT_REGISTER_FAIL });
-      errorAlert(error.response.data)(dispatch);
+      if (error.response) errorAlert(error.response.data)(dispatch);
     });
 };
 

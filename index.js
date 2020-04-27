@@ -6,6 +6,7 @@ const port = 3001;
 app.use(express.json({ extended: true }));
 
 app.use('/api/account', require('./routes/account.routes'));
+app.use('/api/algorithm', require('./routes/algorithm.routes'));
 
 app.get('/1', (req, res) => {
   var dataToSend;

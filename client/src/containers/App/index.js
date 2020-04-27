@@ -21,8 +21,10 @@ import Home from '../Home';
 import About from '../About';
 import Algorithm from '../Algorithm';
 
-const App = ({ token, auth }) => {
-  useEffect(() => token && auth());
+const App = ({ token, isAuth, auth }) => {
+  useEffect(() => {
+    if(token && !isAuth) auth();
+  }, [token, auth, isAuth]);
 
   const alertOptions = {
     position: positions.TOP_CENTER,
@@ -52,6 +54,7 @@ const App = ({ token, auth }) => {
 
 const mapStateToProps = (state) => ({
   token: state.account.token,
+  isAuth: state.account.isAuth,
 });
 
 const mapDispatchToProps = { 

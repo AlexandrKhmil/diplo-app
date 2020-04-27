@@ -1,14 +1,13 @@
 const { Router } = require('express');
 const router = Router();
-const config = require('config');
-const jwtSecret = config.get('jwtSecret');
+const jwtSecret = require('config').get('jwtSecret');
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('../connection');
 const account = require('../middleware/account.middleware')
 
-// GET `api/account/auth`
+// GET 'api/account/auth'
 router.get('/auth', account,
   async (req, res) => {
     try {
@@ -32,7 +31,7 @@ router.get('/auth', account,
   }
 );
 
-// POST `api/account/login`
+// POST 'api/account/login'
 router.post('/login', [
     body('email', 'Некорректный email!').normalizeEmail().isEmail(),
     body('password', 'Некорректный пароль!').isLength({ min: 5 })
@@ -77,7 +76,7 @@ router.post('/login', [
   }
 );
 
-// POST `api/account/register`
+// POST 'api/account/register'
 router.post('/register', [
     body('email', 'Wrong email').normalizeEmail().isEmail(),
     body('password', 'Wrong password').isLength({ min: 5 }),

@@ -1,33 +1,25 @@
-import React from 'react'
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { loadAlgoList } from '../../actions/algorithm';
+
 import AlgorithmCard from '../../components/AlgorithmCard';
 
-const algorithmsList = [
-  {
-    title: 'Primary Algirithm',
-    link: 'primary-algorithm',
-    imgLink: 'https://i.imgur.com/Bb2evGw.jpg',
-    description: 'Some quick example text to build on the card title and make up the bulk of the card'
-  },
-  {
-    title: 'Secondary Algorithm',
-    link: 'secondary-algorithm',
-    imgLink: 'https://i.imgur.com/Bb2evGw.jpg',
-    description: 'Some quick example text to build on the card title and make up the bulk of the card'
-  },
-]
+const Home = ({ list, isLoading, isLoaded, loadAlgoList }) => {
+  useEffect(() => {
+    if (!isLoaded && !isLoading) loadAlgoList();
+  });
 
-const Home = () => {
   return (
     <main>
       <div className="container mt-5">
         <h1 className="mb-3">List of algorithms</h1>  
         <div className="row">
-          {algorithmsList.map(algorithm => 
-            <div key={algorithm.title} className="col-sm-6">
+          {list && Object.values(list).map(algorithm => 
+            <div key={algorithm.id} className="col-sm-6">
               <AlgorithmCard
                 title={algorithm.title}
                 link={`algorithm/${algorithm.link}`}
-                imgLink={algorithm.imgLink}
+                imgLink={algorithm.imgurl}
                 description={algorithm.description}
               />
             </div>
@@ -38,4 +30,17 @@ const Home = () => {
   );
 };
 
-export default Home;
+const mapStateToProps = (state) => ({
+  list: state.algorithm.list,
+  isLoaded: state.algorithm.isLoaded,
+  isLoading: state.algorithm.isLoading,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  loadAlgoList: () => loadAlgoList()(dispatch),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);
