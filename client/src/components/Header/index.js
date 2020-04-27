@@ -9,19 +9,43 @@ function Header(props) {
     { title: 'Home', to: '/' },
     { title: 'About', to: '/about' },
   ];
-
-  pagesList = props.isAuth 
-    ? [...pagesList, { title: 'Account', to: '/account' }] 
-    : pagesList;
   
-  const userList = !props.isAuth
-  ? [
-      { title: 'Login', action: props.modalLoginOpen },
-      { title: 'Register', action: props.modalRegisterOpen },
-    ]
-  : [
-      { title: 'Logout', action: props.logout, className: "btn-info" },
-    ]
+  const authUserList = (
+    <ul className="navbar-nav ml-auto align-items-center">
+      <li className="nav-item mr-3 text-light">
+        Welcome {props.email}
+      </li>
+      <li className="nav-item">
+        <button
+          className='nav-link btn btn-info'
+          onClick = {props.logout}
+        >
+          Logout
+        </button>
+      </li>
+    </ul>
+  );
+
+  const unauthUserList = (
+    <ul className="navbar-nav ml-auto">
+      <li className="nav-item">
+        <button
+          className='nav-link btn btn-link'
+          onClick = {props.modalLoginOpen}
+        >
+          Login
+        </button>
+      </li>
+      <li className="nav-item">
+        <button
+          className='nav-link btn btn-link'
+          onClick = {props.modalRegisterOpen}
+        >
+          Register
+        </button>
+      </li>
+    </ul>
+  )
 
   return (
     <header>
@@ -36,20 +60,8 @@ function Header(props) {
                   </NavLink>
                 </li>
               )} 
-            </ul>
-            <ul className="navbar-nav ml-auto">
-              {userList.map((btn) => 
-                <li className="nav-item" key={btn.title.toString()}>
-                  <button
-                    className={`nav-link btn 
-                      ${btn.className ? btn.className : 'btn-link'}`}
-                    onClick = {btn.action}
-                  >
-                    {btn.title}
-                  </button>
-                </li>
-              )} 
-            </ul>
+            </ul> 
+            {props.isAuth ? authUserList : unauthUserList} 
           </div>
         </div>
       </nav>
@@ -59,6 +71,7 @@ function Header(props) {
 
 const mapStateToProps = (state) => ({
   isAuth: state.account.isAuth,
+  email: state.account.email,
 })
 
 const mapDispatchToProps = {

@@ -5,7 +5,7 @@ import { withAlert } from 'react-alert';
 const Alert = (props) => {
   useEffect(() => { 
     props.error.message && props.alert.error(props.error.message);
-  }, [props.error]);
+  }, [props.error, props.alert]);
 
   return <></>
 }

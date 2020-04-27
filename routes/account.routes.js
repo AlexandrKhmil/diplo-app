@@ -22,12 +22,12 @@ router.get('/auth', account,
         .then((data) => data)
         .catch((error) => ({ error }));
       if (result.error) {
-        return res.status(500).json({ error: result.error });
+        return res.status(500).json({ msg: 'Пользователь отсутствует!' });
       }
 
       return res.status(200).json(result);
     } catch (error) {
-      return res.status(500).json(error);
+      return res.status(500).json({ msg: 'Ошибка авторизации!' });
     }
   }
 );

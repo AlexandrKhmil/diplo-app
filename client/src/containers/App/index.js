@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import {
   positions, 
   transitions,
   Provider as AlertProvider 
-} from 'react-alert'
+} from 'react-alert';
+
+import { auth } from '../../actions/account';
 
 // COMPONENTS
 import Header from '../../components/Header';
@@ -29,6 +31,10 @@ const alertOptions = {
 }
 
 function App(props) {
+  useEffect(() => {
+    props.token && props.auth();
+  });
+
   return (
     <AlertProvider template={AlertTemplate} {...alertOptions}>
       <Router>
@@ -47,9 +53,11 @@ function App(props) {
 }
 
 const mapStateToProps = (state) => ({
+  token: state.account.token,
 });
 
 const mapDispatchToProps = { 
+  auth,
 };
 
 export default connect((state) => mapStateToProps, mapDispatchToProps)(App);

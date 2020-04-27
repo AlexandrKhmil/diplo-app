@@ -1,5 +1,7 @@
 import { 
-  ACCOUNT_AUTH,
+  ACCOUNT_AUTH_LOADING,
+  ACCOUNT_AUTH_SUCCESS,
+  ACCOUNT_AUTH_FAIL,
 
   ACCOUNT_LOGIN_LOADING,
   ACCOUNT_LOGIN_SUCCESS,
@@ -11,15 +13,32 @@ import {
 
 const initialState = {
   email: null,
-  token: null,
+  token: localStorage.getItem('token'),
   isLoading: false,
   isAuth: false,
 };
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
-    case ACCOUNT_AUTH:
-      return state;
+    case ACCOUNT_AUTH_LOADING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case ACCOUNT_AUTH_SUCCESS:
+      return {
+        ...state,
+        ...payload,
+        isLoading: false,
+        isAuth: true,
+      };
+    case ACCOUNT_AUTH_FAIL:
+      return {
+        ...state,
+        ...payload, 
+        isLoading: false,
+        isAuth: false,
+      };
 
     case ACCOUNT_LOGIN_LOADING:
       return { 
@@ -27,6 +46,7 @@ export default (state = initialState, { type, payload }) => {
         isLoading: true, 
       };
     case ACCOUNT_LOGIN_SUCCESS: 
+      localStorage.setItem('token', payload.token);
       return { 
         ...state, 
         ...payload, 
@@ -45,6 +65,7 @@ export default (state = initialState, { type, payload }) => {
       return state;
 
     case ACCOUNT_LOGOUT:
+      localStorage.removeItem('token');
       return initialState;
 
     default:
