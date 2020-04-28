@@ -3,7 +3,7 @@ const {spawn} = require('child_process');
 const app = express();
 const path = require('path');
 const port = process.env.PORT || 3001;
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 app.use(express.json({ extended: true }));
 
