@@ -1,1 +1,1 @@
-print('Этот алгоритм еще не реализован!')
+print('This algo isnt done yet')
