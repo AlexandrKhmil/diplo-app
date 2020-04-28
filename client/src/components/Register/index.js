@@ -68,12 +68,21 @@ const Register = ({
           />
         </div>
         <div className="form-group d-flex justify-content-end mb-0">
-          <button
-            className="btn btn-primary"
+          <button 
+            className="btn btn-primary d-flex 
+              justify-content-between align-items-center"
             type="submit"
-            disabled={isLoading}
+            disabled={isLoading} 
           >
-            Enter
+            {isLoading && 
+              <span 
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              >
+              </span>
+            }
+            {!isLoading ? 'Enter' : 'Loading'}
           </button>
         </div>
       </form>
@@ -88,7 +97,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   modalRegisterClose: () => modalRegisterClose()(dispatch),
-  register,
+  register: (value) => register(value)(dispatch),
   errorAlert,
   dispatch,
 });

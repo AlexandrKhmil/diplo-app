@@ -18,7 +18,7 @@ const Login = ({ status, isLoading, modalLoginClose, login }) => {
       close={modalLoginClose}
       title="Login"
     >
-      <form onSubmit={(e) => onSubmit(e)}>
+      <form onSubmit={(e) => onSubmit(e)}> 
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
@@ -43,10 +43,19 @@ const Login = ({ status, isLoading, modalLoginClose, login }) => {
         </div>
         <div className="form-group d-flex justify-content-end mb-0">
           <button 
-            className="btn btn-primary"
+            className="btn btn-primary d-flex 
+              justify-content-between align-items-center"
             disabled={isLoading} 
           >
-            Enter
+            {isLoading && 
+              <span 
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              >
+              </span>
+            }
+            {!isLoading ? 'Enter' : 'Loading'}
           </button>
         </div>
       </form>

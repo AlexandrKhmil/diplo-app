@@ -21,12 +21,11 @@ import {
 } from './types';
 
 // GET 'api/account/auth'
-export const auth = () => (dispatch, getState) => {
-  dispatch({ type: ACCOUNT_AUTH_LOADING });
-  const token = getState().account.token;
+export const auth = (token) => (dispatch) => {
+  dispatch({ type: ACCOUNT_AUTH_LOADING }); 
   const { config } = jsonRequest({ token });
   axios
-    .get('api/account/auth', config)
+    .get('/api/account/auth', config)
     .then((res) => dispatch({ type: ACCOUNT_AUTH_SUCCESS, payload: res.data }))
     .catch((error) => {
       dispatch({ type: ACCOUNT_AUTH_FAIL });
@@ -63,7 +62,7 @@ export const register = ({ email, password }) => (dispatch) => {
       });
       dispatch({ type: MODAL_REGISTER_CLOSE });
     })
-    .catch((error) => {
+    .catch((error) => { 
       dispatch({ type: ACCOUNT_REGISTER_FAIL });
       if (error.response) errorAlert(error.response.data)(dispatch);
     });

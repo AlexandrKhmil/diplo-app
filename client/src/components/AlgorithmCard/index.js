@@ -3,8 +3,11 @@ import { NavLink } from 'react-router-dom';
 import styles from './styles.module.css';
 
 const AlgorithmCard = ({ link, imgLink, title, description }) => (
-  <div className="card card-body border-primary mb-3 align-items-start">
-    <NavLink to={link}>
+  <div 
+    className={`card card-body border-primary mb-3 align-items-start 
+      ${styles.item}`}
+  >
+    <NavLink className="d-flex w-100" to={link}>
       <img className={styles.img} src={imgLink} alt="Algorithm Preview" />
     </NavLink>
     <NavLink to={link} className="mt-3">

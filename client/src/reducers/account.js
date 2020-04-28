@@ -93,7 +93,12 @@ export default (state = initialState, { type, payload }) => {
 
     case ACCOUNT_LOGOUT: {
       localStorage.removeItem('token');
-      return initialState;
+      return {
+        email: null,
+        token: null,
+        isLoading: false,
+        isAuth: false,
+      };
     }
 
     default: {
