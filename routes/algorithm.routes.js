@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const router = Router();
+const { spawn } = require('child_process');
 const db = require('../connection');
 
 // GET 'api/algorithm/list'
@@ -20,6 +21,22 @@ router.get('/list',
       return res.status(200).json(result);
     } catch (error) {
       return res.status(500).json({ msg: 'Ошибка получения списка!' });
+    }
+  }
+);
+
+// GET 'api/alrotihm/{id}/execute'
+router.get('/:algorithmLink/execute',
+  async (req, res) => {
+    try {
+      const { algorithmLink } = req.params;
+      
+      const python = spawn('python', [`python/${algorithmLink}.py`]);
+      let data = null;
+      python.stdout.on('data', (res) => { data = res.toString(); });
+      python.on('close', (code) => res.status(200).json({ data, code }));
+    } catch(error) {
+      return res.status(500).json({ msg: 'Ошибка выполенния!' });
     }
   }
 );

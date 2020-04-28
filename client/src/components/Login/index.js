@@ -49,7 +49,7 @@ const Login = ({ status, isLoading, modalLoginClose, login }) => {
           >
             {isLoading && 
               <span 
-                class="spinner-border spinner-border-sm"
+                class="spinner-border spinner-border-sm mr-2"
                 role="status"
                 aria-hidden="true"
               >
