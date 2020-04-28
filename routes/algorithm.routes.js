@@ -15,12 +15,12 @@ router.get('/list',
         .then((data) => data)
         .catch((error) => ({ error }));
       if (result.error) {
-        return res.status(500).json({ msg: 'Ошибка получения списка!' });
+        return res.status(500).json({ msg: 'Ошибка получения списка!', err: result.error });
       }
 
       return res.status(200).json(result);
     } catch (error) {
-      return res.status(500).json({ msg: 'Ошибка получения списка!' });
+      return res.status(500).json({ msg: 'Ошибка получения списка!', error });
     }
   }
 );
