@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import styles from './styles.module.css';
 import { execute } from '../../actions/algorithm';
 import Chart from '../../components/Chart';
+import DataLoader from '../../components/DataLoader';
+import DataManager from '../../components/DataManager';
 
 const Algorithm = ({ 
   list,
@@ -59,6 +61,27 @@ const Algorithm = ({
 
           <div className="col-md-6 mb-4">
             <div className="card card-body border-primary">
+              <h2>Data Loading</h2>
+              <DataLoader />
+            </div>
+          </div>
+
+          <div className="col-12 mb-4">
+            <div className="card card-body border-primary">
+              <h2>Data Manager</h2>
+              <DataManager />
+            </div>
+          </div>
+
+          <div className="col-12 mb-4">
+            <div className="card card-body border-primary">
+              <Chart />
+            </div>
+          </div>
+          
+
+          <div className="col-md-6 mb-4">
+            <div className="card card-body border-primary">
               <h2 className="mb-3">Execute</h2>
               <form onSubmit={onSubmit}>
                 <div className="form-group d-flex mb-0">
@@ -70,7 +93,7 @@ const Algorithm = ({
                     >
                       {isExecuting && 
                         <span 
-                          class="spinner-border spinner-border-sm mr-2"
+                          className="spinner-border spinner-border-sm mr-2"
                           role="status"
                           aria-hidden="true"
                         >
@@ -91,12 +114,6 @@ const Algorithm = ({
                     result.data
                   }
               </div>
-            </div>
-          </div>
-
-          <div className="col-12 mb-4">
-            <div className="card card-body border-primary">
-              <Chart />
             </div>
           </div>
 

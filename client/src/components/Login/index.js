@@ -18,7 +18,7 @@ const Login = ({ status, isLoading, modalLoginClose, login }) => {
       close={modalLoginClose}
       title="Login"
     >
-      <form onSubmit={(e) => onSubmit(e)}> 
+      <form onSubmit={onSubmit}> 
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
@@ -49,7 +49,7 @@ const Login = ({ status, isLoading, modalLoginClose, login }) => {
           >
             {isLoading && 
               <span 
-                class="spinner-border spinner-border-sm mr-2"
+                className="spinner-border spinner-border-sm mr-2"
                 role="status"
                 aria-hidden="true"
               >
