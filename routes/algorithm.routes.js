@@ -25,12 +25,12 @@ router.get('/list',
   }
 );
 
-// GET 'api/alrotihm/{id}/execute'
+// GET 'api/algorithm/{id}/execute'
 router.get('/:algorithmLink/execute',
   async (req, res) => {
     try {
       const { algorithmLink } = req.params;
-      
+
       const python = spawn('python', [`python/${algorithmLink}.py`]);
       let data = null;
       python.stdout.on('data', (res) => { data = res.toString(); });
