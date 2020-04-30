@@ -5,12 +5,11 @@ import { execute } from '../../actions/algorithm';
 import Chart from '../../components/Chart';
 
 const Algorithm = ({ 
-  list, 
-  isLoading,
+  list,
   execute,
-  ...props 
+  match,
 }) => {
-  const { algorithmLink } = props.match.params;
+  const { algorithmLink } = match.params;
   const algorithm = list && Object.values(list).find((item) => 
     item.link === algorithmLink);
 
@@ -29,38 +28,14 @@ const Algorithm = ({
   const onSubmit = (e) => {
     e.preventDefault();
     execute({ id, link });
-  }
-
-  const Execute = ({ isExecuting, onSubmit }) => (
-    <form onSubmit={onSubmit}>
-      <div className="form-group d-flex mb-0">
-        <button 
-            className="btn btn-primary d-flex 
-              justify-content-between align-items-center w-100"
-            type="submit"
-            disabled={isExecuting} 
-          >
-            {isExecuting && 
-              <span 
-                class="spinner-border spinner-border-sm mr-2"
-                role="status"
-                aria-hidden="true"
-              >
-              </span>
-            }
-            {!isExecuting ? 'Run' : 'Loading'}
-          </button>
-      </div>
-    </form>
-  );
-  
+  };
 
   return (
     <main>
       <div className="container mt-5 mb-4">
         {title &&
           <h1 className="mb-4">{title}</h1> 
-        } 
+        }
         <div className="card card-body border-primary container">
           <div className="row">
             <div className="col-md-6 d-flex mb-3 mb-md-0">
@@ -75,16 +50,36 @@ const Algorithm = ({
                 {description || 'Описание отсутствует.'}
               </p>
             </div>
-          </div> 
-        </div> 
+          </div>
+        </div>
       </div>
 
-      <div className="container">  
+      <div className="container">
         <div className="row">
+
           <div className="col-md-6 mb-4">
             <div className="card card-body border-primary">
               <h2 className="mb-3">Execute</h2>
-              <Execute isExecuting={isExecuting} onSubmit={onSubmit}/>
+              <form onSubmit={onSubmit}>
+                <div className="form-group d-flex mb-0">
+                  <button 
+                      className="btn btn-primary d-flex 
+                        justify-content-between align-items-center w-100"
+                      type="submit"
+                      disabled={isExecuting} 
+                    >
+                      {isExecuting && 
+                        <span 
+                          class="spinner-border spinner-border-sm mr-2"
+                          role="status"
+                          aria-hidden="true"
+                        >
+                        </span>
+                      }
+                      {!isExecuting ? 'Run' : 'Loading'}
+                    </button>
+                </div>
+              </form>
             </div>
           </div>
 
@@ -104,6 +99,7 @@ const Algorithm = ({
               <Chart />
             </div>
           </div>
+
         </div> 
       </div>
     </main>

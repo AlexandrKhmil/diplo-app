@@ -1,75 +1,29 @@
-import React, { createRef } from 'react';
-import { Line } from 'react-chartjs-2';
+import React from 'react';
+import Chart from 'react-google-charts'
 
-const Chart = () => {
-  const chartReference = createRef();
-  const data = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-      {
-        label: 'Dataset',
-        fill: false,
-        lineTension: 0.1,
-        backgroundColor: 'rgba(75,192,192,0.4)',
-        borderColor: 'rgba(75,192,192,1)',
-        borderCapStyle: 'butt',
-        borderDash: [],
-        borderDashOffset: 0.0,
-        borderJoinStyle: 'miter',
-        pointBorderColor: 'rgba(75,192,192,1)',
-        pointBackgroundColor: '#fff',
-        pointBorderWidth: 1,
-        pointHoverRadius: 5,
-        pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-        pointHoverBorderColor: 'rgba(220,220,220,1)',
-        pointHoverBorderWidth: 2,
-        pointRadius: 1,
-        pointHitRadius: 10,
-        data: [65, 59, 80, 81, 56, 55, 40]
-      },
-    ]
-  };
-
-  const options = {
-    scales: {
-      yAxes: [{
-        stacked: true
-      }]
-    }
-  };
-
-  return (<Line ref={chartReference} data={data} options={options} />);
+const ChartWrapper = () => {
+  let newData = [['day', 'a', 'b', 'c', 'd']];
+  for (let i = 0; i < 100; i++) {
+    newData = [...newData, [`${i}`,  Math.random() * 1000,  Math.random() * 1000,  Math.random() * 1000,  Math.random() * 1000]];
+  }
+  return (
+    <Chart
+      width={'100%'}
+      height={350}
+      chartType="CandlestickChart"
+      loader={<div>Loading Chart</div>}
+      data={newData}
+      options={{
+        legend: 'none',
+        bar: { groupWidth: '100%' }, // Remove space between bars.
+        candlestick: {
+          fallingColor: { strokeWidth: 0, fill: '#a52714' }, // red
+          risingColor: { strokeWidth: 0, fill: '#0f9d58' }, // green
+        },
+      }}
+      rootProps={{ 'data-testid': '1' }}
+    />
+  );
 };
 
-export default Chart;
-
-/*
-// EXAMPLE OF DATASETS
-
-const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-  datasets: [
-    {
-      label: 'My First dataset',
-      fill: false,
-      lineTension: 0.1,
-      backgroundColor: 'rgba(75,192,192,0.4)',
-      borderColor: 'rgba(75,192,192,1)',
-      borderCapStyle: 'butt',
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgba(75,192,192,1)',
-      pointBackgroundColor: '#fff',
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-      pointHoverBorderColor: 'rgba(220,220,220,1)',
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: [65, 59, 80, 81, 56, 55, 40]
-    }
-  ]
-};
-*/
+export default ChartWrapper;
