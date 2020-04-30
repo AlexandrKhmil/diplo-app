@@ -13,10 +13,10 @@ const ChartWrapper = ({ data }) => {
     return `${month}.${day}.${year.slice(-2)}`;
   };
 
-  let chartData = [['day', 'Prices', 'Open', 'Close', 'High']];
+  let chartData = [['day', 'Low', 'Open', 'Close', 'High']];
 
   chartData = [
-    ['day', 'Low', 'Open', 'Close', 'High'],
+    ['day', 'Price', 'Open', 'Close', 'High'],
     ...Object.entries(data).map((row) => {
       return [
         timestampToData(row[0]),

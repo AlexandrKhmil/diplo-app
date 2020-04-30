@@ -11,21 +11,19 @@ const DataManager = ({ data }) => {
   };
 
   return (
-    <table className="table table-hover">
-      <thead>
+    <table className="table table-hover mb-0">
+      <thead className="sticky-top" style={{backgroundColor: 'white'}}>
         <tr>
-          <th scope="col">#</th>
-          <th scope="col">Date</th>
-          <th scope="col">Open Prices</th>
-          <th scope="col">Close Prices</th>
-          <th scope="col">High Prices</th>
-          <th scope="col">Low Prices</th>
+          <th className="border-top-0" scope="col">Date</th>
+          <th className="border-top-0" scope="col">Open</th>
+          <th className="border-top-0" scope="col">Close</th>
+          <th className="border-top-0" scope="col">High</th>
+          <th className="border-top-0" scope="col">Low</th>
         </tr>
       </thead>
       <tbody>
-        {Object.entries(data).map((row, index) => 
+        {Object.entries(data).map((row) => 
           <tr key={row[0].toString()}>
-            <td>{index}</td>
             <th scope="row">{timestampToData(row[0])}</th>
             <td>{row[1].o}</td>
             <td>{row[1].c}</td>

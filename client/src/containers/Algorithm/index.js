@@ -66,16 +66,19 @@ const Algorithm = ({
             </div>
           </div>
 
-          <div className="col-12 mb-4">
+          <div className="col-md-6 mb-4">
             <div className="card card-body border-primary">
               <h2>Data Manager</h2>
-              <DataManager />
+              <div className={styles.tableWrapper}>
+                <DataManager />
+              </div> 
             </div>
           </div>
 
           <div className="col-12 mb-4">
             <div className="card card-body border-primary">
-              <Chart />
+              <h2>Chart</h2> 
+              <Chart /> 
             </div>
           </div>
           
