@@ -42,6 +42,9 @@ def least_squares(x, y):
   alpha = mean(y) - beta * mean(x)
   return alpha, beta
 
+def predict(alpha, beta, x_i):
+  return beta * x_i + alpha
+
 def main():
   lines = read_in()
   data = lines['data']
