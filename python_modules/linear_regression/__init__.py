@@ -50,8 +50,12 @@ def main():
   for i in range(0, len(data) - 1):
     arr[0].append(data[i])
     arr[1].append(data[i + 1])
-  alpha, beta = least_squares(arr[0], arr[1])
-  print([alpha, beta])
+  alpha, beta = least_squares(arr[0], arr[1]) 
+  result = [data[len(data) - 1]]
+  for i in range(0, forward):
+    result.append(predict(alpha, beta, result[i]))
+  result.pop(0)
+  print(result)
 
 if __name__ == '__main__':
   main()
