@@ -22,6 +22,26 @@ def variance(x):
   deviations = de_mean(x)
   return sum_of_squares(deviations) / (n - 1)
 
+def standart_deviation(x):
+  return math.sqrt(variance(x))
+
+def covariance(x, y):
+  n = len(x)
+  return dot(de_mean(x), de_mean(y)) / (n - 1)
+
+def correlation(x, y):
+  stdev_x = standart_deviation(x)
+  stdev_y = standart_deviation(y)
+  if stdev_x > 0 and stdev_y > 0:
+    return covariance(x, y) / stdev_x / stdev_y
+  else:
+    return 0
+
+def least_squares(x, y):
+  beta = correlation(x, y) * standart_deviation(y) / standart_deviation(x)
+  alpha = mean(y) - beta * mean(x)
+  return alpha, beta
+
 def main():
   lines = read_in()
   data = lines['data']
