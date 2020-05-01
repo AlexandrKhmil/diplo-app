@@ -2,10 +2,8 @@
 import sys, json, math #, numpy as np
 # from q import f
 
-# Read data from stdin
 def read_in():
   lines = sys.stdin.readlines()
-  #Since our input would only be having one line, parse our JSON data from that
   return json.loads(lines[0])
 
 ################################################################################
@@ -62,6 +60,7 @@ def main():
   for i in range(0, len(data) - 1):
     arr[0].append(data[i])
     arr[1].append(data[i + 1])
+  print(arr[0])
   
   # alpha, beta = least_squares(arr[0], arr[1]) 
   # result = [data[len(data) - 1]]
@@ -69,7 +68,7 @@ def main():
   #   result.append(predict(alpha, beta, result[i]))
   # result.pop(0)
   # print(result)
-  print(arr[0])
+  
 
 #start process
 if __name__ == '__main__':
