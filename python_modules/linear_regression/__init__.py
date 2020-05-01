@@ -4,6 +4,9 @@ def read_in():
   lines = sys.stdin.readlines()
   return json.loads(lines[0])
 
+def dot(v, w):
+  return sum(v_i * w_i for v_i, w_i in zip(v, w))
+
 def main():
   lines = read_in()
   data = lines['data']
