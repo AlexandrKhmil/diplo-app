@@ -6,7 +6,7 @@ def read_in():
 
 def main():
   lines = read_in()
-  print(lines)
+  print(lines['data'])
 
 if __name__ == '__main__':
   main()
