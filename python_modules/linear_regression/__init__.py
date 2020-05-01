@@ -53,7 +53,7 @@
 
 def main():
   #get our data as an array from read_in()
-  print('123123')
+  print(['123123'])
   # lines = read_in()
   # data = lines['data']
   # forward = int(lines['forward'])
