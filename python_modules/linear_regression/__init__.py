@@ -9,7 +9,7 @@
 
 def main():
   #get our data as an array from read_in()
-  print(12321321)
+  print([12321321])
   # lines = read_in()
   # data = lines['data']
   # forward = int(lines['forward'])
