@@ -1,6 +1,5 @@
 # from linear_regression import least_squares, predict
-# import sys, json #, numpy as np
-
+import sys, json #, numpy as np
 from q import f
 
 # # #Read data from stdin
