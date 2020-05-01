@@ -60,7 +60,7 @@ def main():
   for i in range(0, len(data) - 1):
     arr[0].append(data[i])
     arr[1].append(data[i + 1])
-  print(arr[0])
+  print(lines['data'])
   
   # alpha, beta = least_squares(arr[0], arr[1]) 
   # result = [data[len(data) - 1]]
