@@ -69,7 +69,7 @@ def main():
   #   result.append(predict(alpha, beta, result[i]))
   # result.pop(0)
   # print(result)
-  
+
 
 #start process
 if __name__ == '__main__':
