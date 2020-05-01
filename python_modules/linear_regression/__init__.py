@@ -1,10 +1,10 @@
-# from linear_regression2 import least_squares
-import sys, json, math #, numpy as np
-# from q import f
+# # from linear_regression2 import least_squares
+# import sys, json, math #, numpy as np
+# # from q import f
 
-def read_in():
-  lines = sys.stdin.readlines()
-  return json.loads(lines[0])
+# def read_in():
+#   lines = sys.stdin.readlines()
+#   return json.loads(lines[0])
 
 ################################################################################
 
@@ -53,14 +53,15 @@ def read_in():
 
 def main():
   #get our data as an array from read_in()
-  lines = read_in()
-  data = lines['data']
-  forward = int(lines['forward'])
-  arr = [[], []]
-  for i in range(0, len(data) - 1):
-    arr[0].append(data[i])
-    arr[1].append(data[i + 1])
-  print(lines['data'])
+  print('123123')
+  # lines = read_in()
+  # data = lines['data']
+  # forward = int(lines['forward'])
+  # arr = [[], []]
+  # for i in range(0, len(data) - 1):
+  #   arr[0].append(data[i])
+  #   arr[1].append(data[i + 1])
+  # print(lines['data'])
   
   # alpha, beta = least_squares(arr[0], arr[1]) 
   # result = [data[len(data) - 1]]
