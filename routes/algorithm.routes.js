@@ -29,13 +29,25 @@ router.get('/list',
 router.get('/:algorithmLink/execute',
   async (req, res) => {
     try {
-      const { algorithmLink } = req.params;
+      const { algorithmLink } = req.params,
+            fileLocation = `./python_modules/${algorithmLink}/__init__.py`,
+            python = spawn('python', [fileLocation]),
+            dataInput = JSON.parse(req.headers.data);
+      
+      python.stdin.write(JSON.stringify(dataInput));
+      python.stdin.end();
 
-      const python = spawn('python', [`python/${algorithmLink}.py`]);
-      let data = null;
-      python.stdout.on('data', (res) => { data = res.toString(); });
-      python.on('close', (code) => res.status(200).json({ data, code }));
+      dataString = ''
+
+      python.stdout.on('data', (data) => {
+        if (data.toString() === 'error') return res.status(500).json({ msg: 'Ошибка выполенния!' });
+        dataString += data.toString();
+      });
+      python.on('close', (code) => 
+        res.status(200).json({ data: JSON.parse(dataString), code })
+      );
     } catch(error) {
+      console.log(error)
       return res.status(500).json({ msg: 'Ошибка выполенния!' });
     }
   }

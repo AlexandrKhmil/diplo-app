@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import styles from './styles.module.css';
 import { execute } from '../../actions/algorithm';
@@ -6,14 +6,12 @@ import Chart from '../../components/Chart';
 import DataLoader from '../../components/DataLoader';
 import DataManager from '../../components/DataManager';
 
-const Algorithm = ({ 
-  list,
+const Algorithm = ({
+  data,
   execute,
-  match,
+  algorithm, 
 }) => {
-  const { algorithmLink } = match.params;
-  const algorithm = list && Object.values(list).find((item) => 
-    item.link === algorithmLink);
+  const [forward, setForward] = useState('1');
 
   if (!algorithm) return <>Error</>;
 
@@ -29,8 +27,9 @@ const Algorithm = ({
 
   const onSubmit = (e) => {
     e.preventDefault();
-    execute({ id, link });
-  };
+    const processedData = Object.values(data).map((item) => item.c);
+    execute({ id, link, data: processedData, forward });
+  }; 
 
   return (
     <main>
@@ -87,6 +86,17 @@ const Algorithm = ({
             <div className="card card-body border-primary">
               <h2 className="mb-3">Execute</h2>
               <form onSubmit={onSubmit}>
+                <div className="form-group">
+                  <label htmlFor="forward">На сколько вперед</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="forward"
+                    value={forward}
+                    onChange={(e) => setForward(e.target.value)}
+                    min="1"
+                  />
+                </div>
                 <div className="form-group d-flex mb-0">
                   <button 
                       className="btn btn-primary d-flex 
@@ -112,10 +122,28 @@ const Algorithm = ({
           <div className="col-md-6 mb-4">
             <div className="card card-body border-primary">
               <h2 className="card-title">Result</h2>
-              <div>
-                  {result &&
-                    result.data
-                  }
+              <div className={styles.tableWrapper}>
+                <table className="table table-hover mb-0">
+                  <thead 
+                    className="sticky-top" 
+                    style={{backgroundColor: 'white'}}
+                  >
+                    <tr>
+                      <th className="border-top-0" scope="col">#</th>
+                      <th className="border-top-0" scope="col">Close</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {result.data &&
+                      result.data.map((row, indx) => 
+                        <tr key={indx}>
+                          <td scope="row">{indx + 1}</td>
+                          <td>{row}</td>
+                        </tr>
+                      )
+                    }
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -126,8 +154,10 @@ const Algorithm = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  list: state.algorithm.list,
+const mapStateToProps = (state, props) => ({
+  algorithm: state.algorithm.list && Object.values(state.algorithm.list)
+    .find((item) => item.link === props.match.params.algorithmLink),
+  data: state.data.data,
 });
 
 const mapDispatchToProps = (dispatch) => ({

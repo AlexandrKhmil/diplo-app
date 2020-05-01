@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { errorAlert } from './error';
+import { jsonRequest } from './functions'
 import {
   ALGO_LIST_LOADING,
   ALGO_LIST_SUCCESS,
@@ -23,10 +24,14 @@ export const loadAlgoList = () => (dispatch) => {
 };
 
 // GET 'api/algorithm/{id}/execute'
-export const execute = ({ id, link }) => (dispatch) => {
+export const execute = ({ id, link, data, forward }) => (dispatch) => {
   dispatch({ type: ALGO_EXECUTE_LOADING, payload: id });
+  const { config } = jsonRequest({ data: JSON.stringify({
+    data: data,
+    forward: forward}
+  )});
   axios
-    .get(`/api/algorithm/${link}/execute`)
+    .get(`/api/algorithm/${link}/execute`, config)
     .then((res) => dispatch({ 
       type: ALGO_EXECUTE_SUCCESS, 
       payload: { data: res.data, id: id }
