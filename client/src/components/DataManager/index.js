@@ -5,7 +5,7 @@ const DataManager = ({ data }) => {
   const timestampToData = (timestamp) => {
     const date = new Date(timestamp * 1000);
     const day = date.getDate();
-    const month = date.getMonth();
+    const month = date.getMonth() + 1;
     const year = date.getFullYear();
     return `${month}/${day}/${year}`;
   };

@@ -5,6 +5,7 @@ import { execute } from '../../actions/algorithm';
 import Chart from '../../components/Chart';
 import DataLoader from '../../components/DataLoader';
 import DataManager from '../../components/DataManager';
+import ChartLine from '../../components/ChartLine';
 
 const Algorithm = ({
   data,
@@ -14,6 +15,14 @@ const Algorithm = ({
   const [forward, setForward] = useState('1');
 
   if (!algorithm) return <>Error</>;
+
+  const timestampToData = (timestamp) => {
+    const date = new Date(timestamp * 1000);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear().toString();
+    return `${month}.${day}.${year.slice(-2)}`;
+  };
 
   const { 
     isExecuting,
@@ -29,7 +38,38 @@ const Algorithm = ({
     e.preventDefault();
     const processedData = Object.values(data).map((item) => item.c);
     execute({ id, link, data: processedData, forward });
-  }; 
+  };
+
+  const resultData = result.data;
+
+  let lineChartData = [ ['time', 'Close', 'Predicted'],
+    ...Object.entries(data).map((row) => {
+      return [
+        timestampToData(row[0]),
+        row[1].c,
+        parseInt(null),
+      ]
+    })];
+
+  lineChartData[lineChartData.length - 1][2] = lineChartData[lineChartData.length - 1][1]
+ 
+  let objKeys = Object.keys(data)
+  let lastData = objKeys[objKeys.length - 1] 
+
+  lineChartData = resultData ? [
+    ...lineChartData, 
+    ...resultData.map((item, index) => {
+      var result = new Date(lastData * 1000)
+      result.setDate(result.getDate() + (index + 1) * 7);
+      const day = result.getDate();
+      const month = result.getMonth() + 1;
+      const year = result.getFullYear().toString(); 
+      return [
+        `${month}.${day}.${year.slice(-2)}`,
+        parseInt(null),
+        item,
+      ]})
+  ] : lineChartData;
 
   return (
     <main>
@@ -76,7 +116,7 @@ const Algorithm = ({
 
           <div className="col-12 mb-4">
             <div className="card card-body border-primary">
-              <h2>Chart</h2> 
+              <h2>Chart for inputed data</h2> 
               <Chart /> 
             </div>
           </div>
@@ -137,7 +177,7 @@ const Algorithm = ({
                     {result.data &&
                       result.data.map((row, indx) => 
                         <tr key={indx}>
-                          <td scope="row">{indx + 1}</td>
+                          <th scope="row">{indx + 1}</th>
                           <td>{row}</td>
                         </tr>
                       )
@@ -145,6 +185,15 @@ const Algorithm = ({
                   </tbody>
                 </table>
               </div>
+            </div>
+          </div>
+
+          <div className="col-12 mb-4">
+            <div className="card card-body border-primary">
+              <h2 className="card-title">Chart Results</h2>
+              <ChartLine 
+                data={lineChartData}
+              />
             </div>
           </div>
 
