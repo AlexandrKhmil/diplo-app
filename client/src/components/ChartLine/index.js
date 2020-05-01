@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import Chart from 'react-google-charts'
 
 const ChartWrapper = ({ data }) => {
-  console.log(data)
   return (
     <Chart
       width={'100%'}

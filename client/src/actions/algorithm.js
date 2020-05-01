@@ -38,6 +38,8 @@ export const execute = ({ id, link, data, forward }) => (dispatch) => {
     }))
     .catch((error) => {
       dispatch({ type: ALGO_EXECUTE_FAIL, payload: id });
-      errorAlert(error.response.data)(dispatch);
+      error.response 
+        ? errorAlert(error.response.data)(dispatch)
+        : errorAlert({ msg: 'Ошибка выполнения!' })(dispatch);
     })
 };
