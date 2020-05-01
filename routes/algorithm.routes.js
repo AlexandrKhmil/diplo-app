@@ -43,13 +43,13 @@ router.get('/:algorithmLink/execute',
         dataString += data.toString();
       });
       python.on('close', (code) => {
-        if (code !== 0) return res.status(500).json({ msg: `Ошибка выполенния! ${code}` });
+        if (code !== 0) return res.status(500).json({ msg: `Ошибка выполенния! ${code}, ${dataString}`});
         let data;
         try {
           data = JSON.parse(dataString);
           return res.status(200).json({ data, code });
         } catch(e) {
-          return res.status(500).json({ msg: 'Ошибка выполенния!', error: e })
+          return res.status(500).json({ msg: 'Ошибка выполенния!', error: e, dataString })
         }
       });
     } catch(error) {
