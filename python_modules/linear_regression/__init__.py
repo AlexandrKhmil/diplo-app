@@ -63,7 +63,7 @@ def main():
     arr[0].append(data[i])
     arr[1].append(data[i + 1])
   
-  alpha, beta = least_squares(arr[0], arr[1]) 
+  # alpha, beta = least_squares(arr[0], arr[1]) 
   # result = [data[len(data) - 1]]
   # for i in range(0, forward):
   #   result.append(predict(alpha, beta, result[i]))
