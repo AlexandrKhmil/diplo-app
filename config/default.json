@@ -1,4 +1,4 @@
 {
   "jwtSecret": "jwtSecret",
-  "db": "postgres://alex:Henry1415@localhost:5432/algo_db"
+  "db": "postgres://postgres:root@localhost:5432/algo_db"
 }

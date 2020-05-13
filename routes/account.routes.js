@@ -1,15 +1,11 @@
 const { Router } = require('express');
 const router = Router();
-const jwtSecret = require('config').get('jwtSecret');
-const { body, validationResult } = require('express-validator');
+const { body } = require('express-validator');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const db = require('../connection');
-
 const account = require('../middleware/account.middleware');
 const error = require('../middleware/error.middleware');
-
-const signToken = require('../function/signToken');
+const signToken = require('../functions/signToken');
 
 // GET 'api/account/auth'
 router.get(
@@ -84,7 +80,9 @@ router.post(
           res.status(200).json({ token, email });
         })
         .catch((error) => {
-          res.status(500).json({ msg: "Пользователь с таким email уже существует!" });
+          res.status(500).json({ 
+            msg: "Пользователь с таким email уже существует!", 
+          });
         });
     } catch (err) {
       return res.status(500).json({ msg: "Ошибка регистрации!" });

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { jsonRequest } from '../functions';
 import * as actionType from '../constants/action-type';
 import * as apiURL from '../constants/api-url';
 
@@ -25,7 +26,7 @@ export const accountLoginSuccess = (data) => ({
 });
 
 export const accountLoginFail = () => ({
-  type: actionType.ACCOUNT_AUTH_FAIL,
+  type: actionType.ACCOUNT_LOGIN_FAIL,
 });
 
 export const accountRegRequest = () => ({
@@ -40,3 +41,16 @@ export const accountRegSuccess = (data) => ({
 export const accountRegFail = () => ({
   type: actionType.ACCOUNT_REG_FAIL,
 });
+
+export const accountLogin = ({ email, password }) => (dispatch) => {
+  dispatch(accountLoginRequest());
+  const config = { headers: { 'Content-Type': 'application/json' } };
+  const body = JSON.stringify({ email, password });
+  axios.post(apiURL.ACCOUNT_LOGIN, body, config)
+    .then((res) => {
+      dispatch(accountLoginSuccess(res.data));
+    })
+    .catch((err) => {
+      dispatch(accountLoginFail());
+    });
+};

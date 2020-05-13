@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { accountLogin } from '../../../actions/account';
 
-const Login = ({ isLoading }) => {
+const Login = ({ isLoading, accountLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const onSubmit = (e) => {
     e.preventDefault(); 
+    accountLogin({ email, password });
   };
 
   return (
@@ -53,6 +55,8 @@ const mapStateToProps = (state) => ({
   isLoading: state.account.isLoading,
 });
 
-export default connect(
-  mapStateToProps, 
-)(Login);
+const mapDispatchToProps = (dispatch) => ({
+  accountLogin: (value) => dispatch(accountLogin(value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
