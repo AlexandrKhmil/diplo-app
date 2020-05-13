@@ -68,7 +68,7 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         ...payload,
         isLoading: false,
-        isAuth: false,
+        isAuth: true,
       };
     }
     case actionType.ACCOUNT_REG_FAIL: {

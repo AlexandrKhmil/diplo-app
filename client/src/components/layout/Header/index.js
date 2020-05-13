@@ -2,8 +2,9 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { openLogin, openReg } from '../../../actions/modal';
+import { accountLogout } from '../../../actions/account';
 
-const Header = ({ isAuth, email, openLogin, openReg }) => {
+const Header = ({ isAuth, email, openLogin, openReg, accountLogout }) => {
   const unauthLinks = (
     <>
       <li className="nav-item">
@@ -30,7 +31,8 @@ const Header = ({ isAuth, email, openLogin, openReg }) => {
       </li>
       <li className="nav-item">
         <button
-          className="nav-link btn btn-link">
+          className="nav-link btn btn-link"
+          onClick={accountLogout}>
           Logout
         </button>
       </li>
@@ -47,7 +49,7 @@ const Header = ({ isAuth, email, openLogin, openReg }) => {
                 <NavLink className="nav-link" exact to="/">Home</NavLink>
               </li>
             </ul>
-            <ul className="navbar-nav ml-auto">
+            <ul className="navbar-nav ml-auto align-items-center">
               {!isAuth ? unauthLinks : authLinks}
             </ul>
           </div>
@@ -65,86 +67,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   openLogin: () => dispatch(openLogin()),
   openReg: () => dispatch(openReg()),
+  accountLogout: () => dispatch(accountLogout()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
-
-// import React from 'react';
-// import { NavLink } from 'react-router-dom';
-// import { connect } from 'react-redux';
-// import { logout } from '../../actions/account';
-// import { modalLoginOpen, modalRegisterOpen } from '../../actions/modal';
-
-// const Header = ({ 
-//   email,
-//   isAuth,
-//   modalLoginOpen,
-//   modalRegisterOpen,
-//   logout,
-// }) => {
-//   const pagesList = (
-
-//   );
-//   const authUserList = (
-//     <ul className="navbar-nav ml-auto align-items-center">
-//       
-//       <li className="nav-item">
-//         <button
-//           className='nav-link btn btn-info'
-//           onClick = {logout}
-//         >
-//           Logout
-//         </button>
-//       </li>
-//     </ul>
-//   ); 
-//   const unauthUserList = (
-//     <ul className="navbar-nav ml-auto">
-//       <li className="nav-item">
-//         <button
-//           className='nav-link btn btn-link'
-//           onClick = {modalLoginOpen}
-//         >
-//           Login
-//         </button>
-//       </li>
-//       <li className="nav-item">
-//         <button
-//           className='nav-link btn btn-link'
-//           onClick = {modalRegisterOpen}
-//         >
-//           Register
-//         </button>
-//       </li>
-//     </ul>
-//   );
-
-//   return (
-//     <header>
-//       <nav className="navbar navbar-expand navbar-dark bg-primary">
-//         <div className="container">
-//           <div className="collapse navbar-collapse" id="navbar">
-//             {pagesList}
-//             {isAuth ? authUserList : unauthUserList} 
-//           </div>
-//         </div>
-//       </nav>
-//     </header>
-//   );
-// };
-
-// const mapStateToProps = (state) => ({
-//   isAuth: state.account.isAuth,
-//   email: state.account.email,
-// });
-
-// const mapDispatchToProps = {
-//   modalLoginOpen,
-//   modalRegisterOpen,
-//   logout,
-// };
-
-// export default connect(
-//   mapStateToProps, 
-//   mapDispatchToProps
-// )(Header);

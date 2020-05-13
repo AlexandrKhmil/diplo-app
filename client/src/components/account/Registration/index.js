@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { accountReg } from '../../../actions/account';
 // import Modal from '../Modal';
 // import { register } from '../../actions/account';
 // import { errorAlert } from '../../actions/error';
 
-const Registration = ({ isLoading, }) => {
+const Registration = ({ isLoading, accountReg }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
@@ -16,7 +17,7 @@ const Registration = ({ isLoading, }) => {
     //   const error = { msg: 'Пароли не совпадают!' };
     //   return errorAlert(error)(dispatch);
     // }
-    // register({ email, password });
+    accountReg({ email, password });
   };
 
   return (
@@ -55,14 +56,14 @@ const Registration = ({ isLoading, }) => {
         <button 
           className="btn btn-primary d-flex justify-content-between align-items-center"
           type="submit"
-          disabled={isLoading} >
-          {isLoading && 
+          disabled={isLoading}>
+          {isLoading && (
             <span 
               className="spinner-border spinner-border-sm mr-2"
               role="status"
               aria-hidden="true">
             </span>
-          }
+          )}
           {!isLoading ? 'Enter' : 'Loading'}
         </button>
       </div>
@@ -75,7 +76,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-
+  accountReg: (value) => dispatch(accountReg(value)),
 });
 
 export default connect(

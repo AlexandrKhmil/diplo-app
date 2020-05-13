@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { positions, transitions, Provider as AlertProvider } from 'react-alert';
@@ -12,6 +12,7 @@ import Registration from './components/account/Registration';
 import Alert from './components/alert/Alert';
 import AlertTemplate from './components/alert/AlertTemplate';
 
+import { accountAuth } from './actions/account';
 import { closeLogin, closeReg } from './actions/modal';
 
 const App = (props) => {
@@ -23,6 +24,10 @@ const App = (props) => {
       zIndex: 1070
     },
   };
+
+  useEffect(() => {
+    if (!props.isAuth && props.token) props.accountAuth({ token: props.token });
+  }, [props, props.isAuth, props.token, accountAuth]);
 
   return (
     <AlertProvider template={AlertTemplate} {...alertOptions}>
@@ -46,11 +51,14 @@ const App = (props) => {
 };
 
 const mapStateToProps = (state) => ({
+  isAuth: state.account.isAuth,
+  token: state.account.token,
   modalLoginStatus: state.modal.login.isOpen,
   modalRegStatus: state.modal.reg.isOpen,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  accountAuth: (value) => dispatch(accountAuth(value)),
   closeLogin: () => dispatch(closeLogin()),
   closeReg: () => dispatch(closeReg()),
 });
