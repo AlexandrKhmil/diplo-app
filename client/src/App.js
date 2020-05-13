@@ -12,6 +12,9 @@ import Registration from './components/account/Registration';
 import Alert from './components/alert/Alert';
 import AlertTemplate from './components/alert/AlertTemplate';
 
+import Home from './components/pages/Home';
+import Algorithm from './components/pages/Algorithm';
+
 import { accountAuth } from './actions/account';
 import { closeLogin, closeReg } from './actions/modal';
 
@@ -27,7 +30,7 @@ const App = (props) => {
 
   useEffect(() => {
     if (!props.isAuth && props.token) props.accountAuth({ token: props.token });
-  }, [props, props.isAuth, props.token, accountAuth]);
+  }, [props, props.isAuth, props.token, props.accountAuth]);
 
   return (
     <AlertProvider template={AlertTemplate} {...alertOptions}>
@@ -46,6 +49,10 @@ const App = (props) => {
           <Registration />
         </Modal>
         <Alert />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/algorithm/:link" component={Algorithm} />
+        </Switch>
       </Router>
     </AlertProvider>
   );
