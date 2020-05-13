@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { closeLogin, closeReg } from './modal';
+import { resMessageShow } from './message';
 import * as actionType from '../constants/action-type';
 import * as apiURL from '../constants/api-url';
 
@@ -55,6 +56,7 @@ export const accountAuth = ({ token }) => (dispatch) => {
     })
     .catch((err) => {
       dispatch(accountAuthFail());
+      dispatch(resMessageShow(err.response.data));
     });
 };
 
@@ -69,6 +71,7 @@ export const accountLogin = ({ email, password }) => (dispatch) => {
     })
     .catch((err) => {
       dispatch(accountLoginFail());
+      dispatch(resMessageShow(err.response.data));
     });
 };
 
@@ -83,5 +86,6 @@ export const accountReg = ({ email, password }) => (dispatch) => {
     })
     .catch((err) => {
       dispatch(accountRegFail());
+      dispatch(resMessageShow(err.response.data));
     });
 };

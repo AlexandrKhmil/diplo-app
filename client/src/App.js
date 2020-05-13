@@ -45,6 +45,7 @@ const App = (props) => {
           close={props.closeReg}>
           <Registration />
         </Modal>
+        <Alert />
       </Router>
     </AlertProvider>
   );

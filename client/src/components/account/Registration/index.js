@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { accountReg } from '../../../actions/account';
-// import Modal from '../Modal';
-// import { register } from '../../actions/account';
-// import { errorAlert } from '../../actions/error';
+import { messageShow } from '../../../actions/message';
+import * as msgType from '../../../constants/message-type';
 
-const Registration = ({ isLoading, accountReg }) => {
+const Registration = ({ isLoading, accountReg, messageShow }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
@@ -13,10 +12,14 @@ const Registration = ({ isLoading, accountReg }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // if (password !== passwordRepeat) {
-    //   const error = { msg: 'Пароли не совпадают!' };
-    //   return errorAlert(error)(dispatch);
-    // }
+    if (password !== passwordRepeat) {
+      const error = { 
+        type: msgType.MESSAGE_ERROR,
+        title: 'Ошибка!',
+        text: 'Пароли не совпадают!', 
+      };
+      return messageShow(error);
+    }
     accountReg({ email, password });
   };
 
@@ -77,6 +80,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   accountReg: (value) => dispatch(accountReg(value)),
+  messageShow: (value) => dispatch(messageShow(value)),
 });
 
 export default connect(
