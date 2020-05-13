@@ -1,0 +1,11 @@
+--------------------------------------------------------------------------------
+-- account ---------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+CREATE TABLE account (
+  id SERIAL NOT NULL,
+  email CHARACTER VARYING NOT NULL,
+  password CHARACTER VARYING NOT NULL,
+  create_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+  CONSTRAINT account_id_pk PRIMARY KEY (id)
+);

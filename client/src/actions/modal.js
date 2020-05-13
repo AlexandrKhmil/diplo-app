@@ -1,22 +1,17 @@
-import {
-  MODAL_LOGIN_OPEN,
-  MODAL_LOGIN_CLOSE,
-  MODAL_REGISTER_OPEN,
-  MODAL_REGISTER_CLOSE,
-} from './types';
+import * as actionType from '../constants/action-type';
 
-export const modalLoginOpen = () => (dispatch) => dispatch({
-  type: MODAL_LOGIN_OPEN,
+export const openLogin = () => ({
+  type: actionType.MODAL_LOGIN_OPEN,
 });
 
-export const modalLoginClose = () => (dispatch) => dispatch({
-  type: MODAL_LOGIN_CLOSE,
+export const closeLogin = () => ({
+  type: actionType.MODAL_LOGIN_CLOSE,
 });
 
-export const modalRegisterOpen = () => (dispatch) => dispatch({
-  type: MODAL_REGISTER_OPEN,
+export const openReg = () => ({
+  type: actionType.MODAL_REG_OPEN,
 });
 
-export const modalRegisterClose = () => (dispatch) => dispatch({
-  type: MODAL_REGISTER_CLOSE,
+export const closeReg = () => ({
+  type: actionType.MODAL_REG_CLOSE,
 });
