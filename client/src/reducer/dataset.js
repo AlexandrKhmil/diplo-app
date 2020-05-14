@@ -52,6 +52,15 @@ export default (state = initialState(), { type, payload }) => {
         selected: payload, 
       };
     }
+    case actionType.DATASET_DELETE: {
+      const list = Object.fromEntries(Object.entries(state.list)
+        .filter((dataset) => dataset[0] !== String(payload)));
+      localStorage.setItem('datasetlist', JSON.stringify(list));
+      return {
+        ...state,
+        list,
+      }
+    }
     default: {
       return state;
     }

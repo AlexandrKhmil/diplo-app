@@ -22,6 +22,11 @@ export const selectDataset = (id) => ({
   payload: id,
 });
 
+export const datasetDelete = (id) => ({
+  type: actionType.DATASET_DELETE,
+  payload: id,
+})
+
 export const loadData = ({ resolution, start, end }) => (dispatch) => {
   dispatch(loaderGetRequest());
   axios.get(apiURL.FINHUB_GET({ resolution, start, end }))

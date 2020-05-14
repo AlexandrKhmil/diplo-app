@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { selectDataset } from '../../../actions/dataset';
+import { selectDataset, datasetDelete } from '../../../actions/dataset';
 import { timestampToDataTime } from '../../../functions/timestamp';
 
-const DatasetList = ({ list, selected, selectDataset }) => {
+const DatasetList = ({ list, selected, selectDataset, datasetDelete }) => {
   return (
     <table className="table table-hover mb-0">
       <thead className="sticky-top" style={{backgroundColor: 'white'}}>
         <tr>
           <th className="border-top-0" scope="col">Loaded</th>
-          <th className="border-top-0" scope="col">Select</th>
+          <th className="border-top-0" scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -21,6 +21,13 @@ const DatasetList = ({ list, selected, selectDataset }) => {
                 className={`btn ${selected === dataset.loaded ? 'btn-success' : 'btn-secondary'}`}
                 onClick={() => selectDataset(dataset.loaded)}>
                 Select
+              </button>
+            </td>
+            <td>
+              <button 
+                className="btn btn-danger"
+                onClick={() => datasetDelete(dataset.loaded)}>
+                Delete
               </button>
             </td>
           </tr>
@@ -37,6 +44,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   selectDataset: (value) => dispatch(selectDataset(value)),
+  datasetDelete: (value) => dispatch(datasetDelete(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DatasetList);
