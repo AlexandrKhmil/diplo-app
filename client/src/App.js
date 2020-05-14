@@ -57,7 +57,7 @@ const App = (props) => {
           status={props.modalDatasetStatus}
           title="Dataset"
           close={props.modalDatasetClose}>
-          <DataTable data={props.viewedDataset} />
+          <DataTable headers={props.viewedHeaders} data={props.viewedDataset} />
         </Modal>
         <Alert />
         <Switch>
@@ -74,9 +74,11 @@ const mapStateToProps = (state) => {
   const list = state.dataset.list;
   const viewed = state.modal.dataset.viewed
   const viewedDataset = list[viewed] ? finhubToDataset(list[viewed]) : [];
+  const viewedHeaders = list[viewed] ? list[viewed].headers : [];
 
   return {
     viewedDataset,
+    viewedHeaders,
     isAuth: state.account.isAuth,
     token: state.account.token,
     modalLoginStatus: state.modal.login.isOpen,

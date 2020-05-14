@@ -31,7 +31,7 @@ const DatasetList = ({
 
       {sortedList.map((dataset) => (
         <div className="card card-body border-primary mb-3 flex-row justify-content-between align-items-center" key={dataset.loaded}>
-          <div>
+          <div className="d-flex">
             <div>
               <span className="font-weight-bold">Создан: </span> 
               <span>{timestampToDataTime(dataset.loaded)}</span>

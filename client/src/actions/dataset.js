@@ -32,6 +32,7 @@ export const loadData = ({ resolution, start, end }) => (dispatch) => {
   axios.get(apiURL.FINHUB_GET({ resolution, start, end }))
     .then((res) => {
       res.data['loaded'] = parseInt(new Date().getTime() / 1000);
+      res.data['headers'] = ['Data', 'Open', 'Close', 'High', 'Low'];
       dispatch(loaderGetSuccess(res.data));
       dispatch(messageShow({ 
         type: msgType.MESSAGE_SUCCESS, 
