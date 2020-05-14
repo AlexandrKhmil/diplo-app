@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { algoGetInfo } from '../../../functions/algorithm';
 import styles from './styles.module.css';
+import Loader from '../../dataset/Loader';
 
 const Algorithm = (props) => {
   const { link } = props.match.params;
@@ -20,7 +21,7 @@ const Algorithm = (props) => {
       <div className="container mt-5 mb-4">
         <div className="row">
 
-          <div className="col-12">
+          <div className="col-12 mb-3">
             <h1 className="mb-3">{algo.title && algo.title}</h1>
 
             <div className="card card-body border-primary">
@@ -32,6 +33,12 @@ const Algorithm = (props) => {
                   {algo.short_desc ? algo.short_desc : 'Описание отсутствует...'}
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div className="col-md-6">
+            <div className="card card-body border-primary">
+              <Loader />
             </div>
           </div>
 

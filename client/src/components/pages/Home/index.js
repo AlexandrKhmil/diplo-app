@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './styles.module.css';
-import algoGetList from '../../../functions/algo_get_list';
+import { algoGetList } from '../../../functions/algorithm';
 
 const Home = () => {
   const [list, setList] = useState([]);
