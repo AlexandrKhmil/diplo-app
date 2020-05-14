@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { selectDataset, datasetDelete } from '../../../actions/dataset';
 import { timestampToDataTime } from '../../../functions/timestamp';
+import { datasetListSort } from '../../../functions/dataset';
+import * as datasetSortType from '../../../constants/dataset-sort-type';
 
 const DatasetList = ({ list, selected, selectDataset, datasetDelete }) => {
+  const [selectedSort, setSelectedSort] = useState(datasetSortType.DATASET_DATE_DESC);
+  list = datasetListSort(list, selectedSort);
+
   return (
     <>
+      <div className="card card-body border-primary mb-3 flex-row align-items-center">
+        <label className="font-weight-bold mb-0" htmlFor="datasetSort">Sort by:</label> 
+        <select className="ml-3" id="datasetSort" onChange={(e) => setSelectedSort(e.target.value)}>
+          <option value={datasetSortType.DATASET_DATE_DESC}>By Date DESC</option>
+          <option value={datasetSortType.DATASET_DATE_ASC}>By Date ASC</option>
+        </select> 
+      </div>
+
       {list.map((dataset) => (
         <div className="card card-body border-primary mb-3 flex-row justify-content-between align-items-center" key={dataset.loaded}>
           <div>

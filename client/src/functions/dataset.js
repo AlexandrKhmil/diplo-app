@@ -1,3 +1,5 @@
+import * as datasetListSortType from '../constants/dataset-sort-type';
+
 export const finhubToDataset = (data) => {
   let result = {};
   for (let i = 0; i < data.t.length; i++) {
@@ -13,4 +15,18 @@ export const finhubToDataset = (data) => {
     };
   }
   return result;
+};
+
+export const datasetListSort = (list, sortType) => {
+  switch (sortType) {
+    case datasetListSortType.DATASET_DATE_ASC: {
+      return list.sort((a, b) => a.loaded - b.loaded);
+    }
+    case datasetListSortType.DATASET_DATE_DESC: {
+      return list.sort((a, b) => b.loaded - a.loaded);
+    }
+    default: {
+      return list;
+    }
+  }
 };
