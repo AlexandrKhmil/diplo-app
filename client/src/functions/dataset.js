@@ -1,18 +1,37 @@
-import * as datasetListSortType from '../constants/dataset-sort-type';
+import { timestampToData } from './timestamp';
+import * as datasetListSortType from '../constants/dataset-list-sort-type';
 
 export const finhubToDataset = (data) => {
   let result = {};
   for (let i = 0; i < data.t.length; i++) {
     result = {
       ...result, 
-      [data.t[i]]: { 
-        c: data.c[i],
-        h: data.h[i],
-        l: data.l[i],
-        o: data.o[i],
-        v: data.v[i],
-      },
+      [data.t[i]]: [ 
+        data.c[i],
+        data.h[i],
+        data.l[i],
+        data.o[i],
+        // data.v[i],
+      ],
     };
+  }
+  return result;
+};
+
+export const finhubToCandle = (data, headers) => {
+  let result = [['day', 'Price', 'Open', 'Close', 'High']];
+  for (let i = 0; i < data.t.length; i++) {
+    result = [
+      ...result, 
+      [
+      timestampToData(data.t[i]), 
+      data.l[i],
+      data.o[i],
+      data.c[i],
+      data.h[i],
+      // data.v[i],
+    ],
+    ];
   }
   return result;
 };

@@ -5,7 +5,7 @@ export const timestampToData = (timestamp) => {
   let month = date.getMonth() + 1;
   month = month < 10 ? `0${month}` : month;
   let year = date.getFullYear();
-  return `${day}-${month}-${year}`;
+  return `${day}.${month}.${year}`;
 };
 
 export const timestampToDataTime = (timestamp) => {

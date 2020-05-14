@@ -7,7 +7,11 @@ const initialState = {
   reg: {
     isOpen: false,
   },
-  dataset: {
+  datasetTable: {
+    isOpen: false,
+    viewed: null,
+  },
+  datasetCandle: {
     isOpen: false,
     viewed: null,
   }
@@ -15,6 +19,7 @@ const initialState = {
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
+    // LOGIN
     case actionType.MODAL_LOGIN_OPEN: {
       return {
         ...state,
@@ -31,6 +36,8 @@ export default (state = initialState, { type, payload }) => {
         },
       };
     }
+
+    // REGISTRATION
     case actionType.MODAL_REG_OPEN: {
       return {
         ...state,
@@ -47,19 +54,41 @@ export default (state = initialState, { type, payload }) => {
         },
       };
     }
-    case actionType.MODAL_DATASET_OPEN: {
+
+    // DATASET TABLE
+    case actionType.MODAL_DATASET_TABLE_OPEN: {
       return {
         ...state,
-        dataset: {
+        datasetTable: {
           isOpen: true,
           viewed: payload,
         },
       };
     }
-    case actionType.MODAL_DATASET_CLOSE: {
+    case actionType.MODAL_DATASET_TABLE_CLOSE: {
       return {
         ...state,
-        dataset: {
+        datasetTable: {
+          ...state.dataset,
+          isOpen: false,
+        },
+      };
+    }
+
+    // DATASET CANDLE
+    case actionType.MODAL_DATASET_CANDLE_OPEN: {
+      return {
+        ...state,
+        datasetCandle: {
+          isOpen: true,
+          viewed: payload,
+        },
+      };
+    }
+    case actionType.MODAL_DATASET_CANDLE_CLOSE: {
+      return {
+        ...state,
+        datasetCandle: {
           ...state.dataset,
           isOpen: false,
         },

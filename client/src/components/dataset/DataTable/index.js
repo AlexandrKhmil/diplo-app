@@ -3,7 +3,6 @@ import { timestampToData } from '../../../functions/timestamp';
 import styles from './styles.module.css';
 
 const DataTable = ({ headers, data }) => {
-  console.log(data)
   return (
     <div className={styles.wrapper}>
       <table className="table table-hover mb-0">
@@ -11,7 +10,11 @@ const DataTable = ({ headers, data }) => {
           <thead className="sticky-top" style={{backgroundColor: 'white'}}>
             <tr>
               {headers.map((value, index) => (
-                <th className="border-top-0" scope="col" key={index}>{value}</th>
+                <th className="border-top-0" scope="col" key={index}>
+                  <button className="btn btn-link text-dark">
+                    {value}
+                  </button>
+                </th>
               ))}
             </tr>
           </thead>
@@ -21,10 +24,9 @@ const DataTable = ({ headers, data }) => {
           {Object.entries(data).map((row) => 
             <tr key={row[0].toString()}>
               <th scope="row">{timestampToData(row[0])}</th>
-              <td>{row[1].o}</td>
-              <td>{row[1].c}</td>
-              <td>{row[1].h}</td>
-              <td>{row[1].l}</td>
+              {row[1].map((item, index) => (
+                <td key={index}>{item}</td>
+              ))}
             </tr>
           )}
         </tbody>

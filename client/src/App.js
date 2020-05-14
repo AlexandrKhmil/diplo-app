@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { positions, transitions, Provider as AlertProvider } from 'react-alert';
+import Chart from 'react-google-charts';
 
 import Header from './components/layout/Header';
 import Modal from './components/layout/Modal';
@@ -19,11 +20,13 @@ import AlgorithmPage from './components/pages/Algorithm';
 import DataPage from './components/pages/DataPage';
 
 import { accountAuth } from './actions/account';
-import { closeLogin, closeReg, modalDatasetClose } from './actions/modal';
+import { closeLogin, closeReg, modalDatasetTableClose, modalDatasetChartCandleClose } from './actions/modal';
 
-import { finhubToDataset } from './functions/dataset';
+import { finhubToDataset, finhubToCandle } from './functions/dataset';
 
 const App = (props) => {
+  
+  // Alert
   const alertOptions = {
     position: positions.TOP_CENTER,
     timeout: 5000,
@@ -32,6 +35,18 @@ const App = (props) => {
       zIndex: 1070
     },
   };
+  
+  // Candle Chart
+  const chartCandleOptions = {
+    legend: 'none',
+    bar: { groupWidth: '100%' },
+    candlestick: {
+      fallingColor: { strokeWidth: 0, fill: '#a52714' }, 
+      risingColor: { strokeWidth: 0, fill: '#0f9d58' }, 
+    },
+  };
+
+  console.log(props.viewedDatasetCandle);
 
   useEffect(() => {
     if (!props.isAuth && props.token) props.accountAuth({ token: props.token });
@@ -54,10 +69,24 @@ const App = (props) => {
           <Registration />
         </Modal>
         <Modal
-          status={props.modalDatasetStatus}
+          status={props.modalDatasetTableStatus}
           title="Dataset"
-          close={props.modalDatasetClose}>
-          <DataTable headers={props.viewedHeaders} data={props.viewedDataset} />
+          close={props.modalDatasetTableClose}>
+          <DataTable headers={props.viewedTableHeaders} data={props.viewedDatasetTable} />
+        </Modal>
+        <Modal
+          dialogStyles={{ maxWidth: '100%' }}
+          status={props.modalDatasetCandleChartStatus}
+          title="Candle Chart"
+          close={props.modalDatasetChartCandleClose}>
+          <Chart 
+            width={'100%'}
+            height={'100%'}
+            chartType="CandlestickChart"
+            loader={<div>Loading Chart</div>}
+            data={props.viewedDatasetCandle}
+            options={chartCandleOptions}
+            rootProps={{ 'data-testid': '1' }} />
         </Modal>
         <Alert />
         <Switch>
@@ -72,18 +101,24 @@ const App = (props) => {
 
 const mapStateToProps = (state) => {
   const list = state.dataset.list;
-  const viewed = state.modal.dataset.viewed
-  const viewedDataset = list[viewed] ? finhubToDataset(list[viewed]) : [];
-  const viewedHeaders = list[viewed] ? list[viewed].headers : [];
+  const viewedTable = state.modal.datasetTable.viewed
+  const viewedDatasetTable = list[viewedTable] ? finhubToDataset(list[viewedTable]) : [];
+  const viewedTableHeaders = list[viewedTable] ? list[viewedTable].headers : [];
+  
+  const viewedCandle = state.modal.datasetCandle.viewed;
+  const candleHeaders = ['day', 'Price', 'Open', 'Close', 'High'];
+  const viewedDatasetCandle = list[viewedCandle] ? finhubToCandle(list[viewedCandle], candleHeaders) : [];
 
   return {
-    viewedDataset,
-    viewedHeaders,
+    viewedDatasetTable,
+    viewedTableHeaders,
+    viewedDatasetCandle,
     isAuth: state.account.isAuth,
     token: state.account.token,
     modalLoginStatus: state.modal.login.isOpen,
     modalRegStatus: state.modal.reg.isOpen,
-    modalDatasetStatus: state.modal.dataset.isOpen,
+    modalDatasetTableStatus: state.modal.datasetTable.isOpen,
+    modalDatasetCandleChartStatus: state.modal.datasetCandle.isOpen,
   };
 };
 
@@ -91,7 +126,8 @@ const mapDispatchToProps = (dispatch) => ({
   accountAuth: (value) => dispatch(accountAuth(value)),
   closeLogin: () => dispatch(closeLogin()),
   closeReg: () => dispatch(closeReg()),
-  modalDatasetClose: () => dispatch(modalDatasetClose())
+  modalDatasetTableClose: () => dispatch(modalDatasetTableClose()),
+  modalDatasetChartCandleClose: () => dispatch(modalDatasetChartCandleClose()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

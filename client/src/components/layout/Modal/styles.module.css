@@ -25,3 +25,8 @@
   opacity: 0;
   transition: opacity 200ms;
 }
+
+.autoWidth {
+  max-width: none;
+  width: auto;
+}

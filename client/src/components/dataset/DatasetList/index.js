@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { selectDataset, datasetDelete } from '../../../actions/dataset';
-import { modalDatasetOpen } from '../../../actions/modal';
+import { modalDatasetTableOpen, modalDatasetChartCandleOpen } from '../../../actions/modal';
 import { timestampToDataTime } from '../../../functions/timestamp';
 import { datasetListSort } from '../../../functions/dataset';
-import * as datasetSortType from '../../../constants/dataset-sort-type';
+import * as datasetSortType from '../../../constants/dataset-list-sort-type';
 
 const DatasetList = ({ 
   list, 
   selected, 
   selectDataset, 
   datasetDelete, 
-  modalDatasetOpen 
+  modalDatasetTableOpen,
+  modalDatasetChartCandleOpen,
 }) => {
   const [selectedSort, setSelectedSort] = useState(datasetSortType.DATASET_DATE_DESC);
   const [sortedList, setSortedList] = useState(datasetListSort(list, selectedSort));
@@ -23,7 +24,7 @@ const DatasetList = ({
     <>
       <div className="card card-body border-primary mb-3 flex-row align-items-center">
         <label className="font-weight-bold mb-0" htmlFor="datasetSort">Sort by:</label> 
-        <select className="ml-3" id="datasetSort" onChange={(e) => setSelectedSort(e.target.value)}>
+        <select className="custom-select w-auto ml-3" id="datasetSort" onChange={(e) => setSelectedSort(e.target.value)}>
           <option value={datasetSortType.DATASET_DATE_DESC}>By Date DESC</option>
           <option value={datasetSortType.DATASET_DATE_ASC}>By Date ASC</option>
         </select> 
@@ -40,8 +41,13 @@ const DatasetList = ({
           <div>
             <button 
               className="btn btn-outline-info mr-3"
-              onClick={() => modalDatasetOpen(dataset.loaded)}>
+              onClick={() => modalDatasetTableOpen(dataset.loaded)}>
               View
+            </button>
+            <button 
+              className="btn btn-outline-info mr-3"
+              onClick={() => modalDatasetChartCandleOpen(dataset.loaded)}>
+              Chart
             </button>
             <button 
               className={`btn ${selected === dataset.loaded ? 'btn-success' : 'btn-outline-success'} mr-3`}
@@ -68,7 +74,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   selectDataset: (value) => dispatch(selectDataset(value)),
   datasetDelete: (value) => dispatch(datasetDelete(value)),
-  modalDatasetOpen: (value) => dispatch(modalDatasetOpen(value)),
+  modalDatasetTableOpen: (value) => dispatch(modalDatasetTableOpen(value)),
+  modalDatasetChartCandleOpen: (value) => dispatch(modalDatasetChartCandleOpen(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DatasetList);
