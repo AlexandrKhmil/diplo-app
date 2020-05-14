@@ -5,35 +5,30 @@ import { timestampToDataTime } from '../../../functions/timestamp';
 
 const DatasetList = ({ list, selected, selectDataset, datasetDelete }) => {
   return (
-    <table className="table table-hover mb-0">
-      <thead className="sticky-top" style={{backgroundColor: 'white'}}>
-        <tr>
-          <th className="border-top-0" scope="col">Loaded</th>
-          <th className="border-top-0" scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        {list.map((dataset) => (
-          <tr key={dataset.loaded}>
-            <th scope="row">{timestampToDataTime(dataset.loaded)}</th>
-            <td>
-              <button 
-                className={`btn ${selected === dataset.loaded ? 'btn-success' : 'btn-secondary'}`}
-                onClick={() => selectDataset(dataset.loaded)}>
-                Select
-              </button>
-            </td>
-            <td>
-              <button 
-                className="btn btn-danger"
-                onClick={() => datasetDelete(dataset.loaded)}>
-                Delete
-              </button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <>
+      {list.map((dataset) => (
+        <div className="card card-body border-primary mb-3 flex-row justify-content-between align-items-center" key={dataset.loaded}>
+          <div>
+            <div>
+              <span className="font-weight-bold">Создан: </span> 
+              <span>{timestampToDataTime(dataset.loaded)}</span>
+            </div>
+          </div>
+          <div>
+            <button 
+              className={`btn ${selected === dataset.loaded ? 'btn-success' : 'btn-outline-success'} mr-3`}
+              onClick={() => selectDataset(dataset.loaded)}>
+              Select
+            </button>
+            <button 
+              className="btn btn-outline-danger"
+              onClick={() => datasetDelete(dataset.loaded)}>
+              Delete
+            </button>
+          </div>
+        </div>
+      ))}
+    </>
   );
 };
 

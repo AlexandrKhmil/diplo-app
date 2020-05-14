@@ -13,4 +13,4 @@ export const finhubToDataset = (data) => {
     };
   }
   return result;
-}
+};

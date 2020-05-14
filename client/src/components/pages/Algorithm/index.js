@@ -7,7 +7,7 @@ import { algoGetInfo } from '../../../functions/algorithm';
 import { finhubToDataset } from '../../../functions/dataset';
 import styles from './styles.module.css';
 
-const Algorithm = ({ selectedDataset, ...props }) => {
+const AlgorithmPage = ({ selectedDataset, ...props }) => {
   const { link } = props.match.params;
   const [algo, setAlgo] = useState({}); 
   const [isLoaded, setIsLoaded] = useState(false);
@@ -81,4 +81,4 @@ const mapDispatchToProps = (dispatch) => ({
   
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Algorithm);
+export default connect(mapStateToProps, mapDispatchToProps)(AlgorithmPage);

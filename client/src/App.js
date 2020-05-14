@@ -13,7 +13,8 @@ import Alert from './components/alert/Alert';
 import AlertTemplate from './components/alert/AlertTemplate';
 
 import Home from './components/pages/Home';
-import Algorithm from './components/pages/Algorithm';
+import AlgorithmPage from './components/pages/Algorithm';
+import DataPage from './components/pages/DataPage';
 
 import { accountAuth } from './actions/account';
 import { closeLogin, closeReg } from './actions/modal';
@@ -51,7 +52,8 @@ const App = (props) => {
         <Alert />
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/algorithm/:link" component={Algorithm} />
+          <Route path="/algorithm/:link" component={AlgorithmPage} />
+          <Route path="/datasets/" component={DataPage} />
         </Switch>
       </Router>
     </AlertProvider>
