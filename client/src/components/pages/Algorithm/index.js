@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import Loader from '../../dataset/Loader';
+import DatasetList from '../../dataset/DatasetList';
 import { algoGetInfo } from '../../../functions/algorithm';
 import styles from './styles.module.css';
-import Loader from '../../dataset/Loader';
 
 const Algorithm = (props) => {
   const { link } = props.match.params;
@@ -39,6 +40,12 @@ const Algorithm = (props) => {
           <div className="col-md-6">
             <div className="card card-body border-primary">
               <Loader />
+            </div>
+          </div>
+
+          <div className="col-md-6">
+            <div className="card card-body border-primary">
+              <DatasetList />
             </div>
           </div>
 
