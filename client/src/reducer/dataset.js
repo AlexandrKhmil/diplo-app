@@ -1,13 +1,18 @@
 import * as actionType from '../constants/action-type';
 
-const initialState = {
-  list: {},
-  loader: {
-    isLoading: false,
-  }
+const initialState = () => {
+  let list = localStorage.getItem('datasetlist');
+  list = list ? JSON.parse(list) : {};
+  return {
+    list,
+    loader: {
+      isLoading: false,
+    } 
+  };
 };
+  
 
-export default (state = initialState, { type, payload }) => {
+export default (state = initialState(), { type, payload }) => {
   switch (type) {
     case actionType.LOADER_GET_REQUEST: {
       return {
@@ -18,12 +23,14 @@ export default (state = initialState, { type, payload }) => {
       };
     }
     case actionType.LOADER_GET_SUCCESS: {
+      const list = {
+        ...state.list,
+        [payload.loaded]: { ...payload },
+      };
+      localStorage.setItem('datasetlist', JSON.stringify(list));
       return {
         ...state,
-        list: {
-          ...state.list,
-          [payload.loaded]: { ...payload },
-        },
+        list,
         loader: {
           isLoading: false,
         }
