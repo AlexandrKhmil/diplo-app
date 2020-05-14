@@ -20,6 +20,24 @@ router.get(
   }
 );
 
+// GET 'api/algorithm/info'
+router.get(
+  '/info',
+  async (req, res) => {
+    try {
+      const { link } = req.headers;
+      const query = require('../sql/algo_one.js');
+      db.one(query, link)
+        .then((data) =>  res.status(200).json(data))
+        .catch((error) => {
+          res.status(500).json({ msg: 'Ошибка получения списка!', error });
+        });
+    } catch (error) {
+      return res.status(500).json({ msg: 'Ошибка получения списка!', error });
+    }
+  }
+);
+
 // GET 'api/algorithm/{id}/execute'
 router.get('/:algorithmLink/execute',
   async (req, res) => {

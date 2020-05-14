@@ -5,3 +5,4 @@ export const ACCOUNT_REG = '/api/account/register';
 
 // ALGORITHM
 export const ALGO_LIST = '/api/algorithm/list';
+export const ALGO_ONE = '/api/algorithm/info';
