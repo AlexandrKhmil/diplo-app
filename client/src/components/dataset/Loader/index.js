@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { loadData } from '../../../actions/dataset';
+import { messageShow } from '../../../actions/message';
+import * as msgType from '../../../constants/message-type';
 
-const Loader = () => {
-  const isLoading = false;
-
+const Loader = ({ isLoading, messageShow, loadData }) => {
   const [where, setWhere] = useState('finnhub.io');
   const [which, setWhich] = useState('AAPL');
   const [resolution, setResolution] = useState('W');
@@ -11,17 +13,19 @@ const Loader = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // if (!start || !end) {
-    //   const error = { msg: 'Укажите даты!' }
-    //   return errorAlert(error);
-    // }
-
-    // loadData({ 
-    //   where,
-    //   resolution,
-    //   start: Date.parse(start) / 1000, 
-    //   end: Date.parse(end) / 1000, 
-    // });
+    if (!start || !end) {
+      return messageShow( {
+        type: msgType.MESSAGE_ERROR,
+        title: 'Ошибка', 
+        text: 'Укажите даты!' 
+      });
+    }
+    if (!isLoading) loadData({ 
+      where,
+      resolution,
+      start: Date.parse(start) / 1000, 
+      end: Date.parse(end) / 1000, 
+    });
   };
 
   return (
@@ -107,4 +111,13 @@ const Loader = () => {
   );
 };
 
-export default Loader;
+const mapStateToProps = (state) => ({
+  isLoading: state.dataset.loader.isLoading,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  messageShow: (value) => dispatch(messageShow(value)),
+  loadData: (value) => dispatch(loadData(value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Loader);
