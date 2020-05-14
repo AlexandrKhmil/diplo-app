@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { selectDataset, datasetDelete } from '../../../actions/dataset';
+import { modalDatasetOpen } from '../../../actions/modal';
 import { timestampToDataTime } from '../../../functions/timestamp';
 import { datasetListSort } from '../../../functions/dataset';
 import * as datasetSortType from '../../../constants/dataset-sort-type';
 
-const DatasetList = ({ list, selected, selectDataset, datasetDelete }) => {
+const DatasetList = ({ 
+  list, 
+  selected, 
+  selectDataset, 
+  datasetDelete, 
+  modalDatasetOpen 
+}) => {
   const [selectedSort, setSelectedSort] = useState(datasetSortType.DATASET_DATE_DESC);
-  list = datasetListSort(list, selectedSort);
+  const [sortedList, setSortedList] = useState(datasetListSort(list, selectedSort));
+  useEffect(() => {
+    setSortedList(datasetListSort(list, selectedSort));
+  }, [list, selectedSort]);
 
   return (
     <>
@@ -19,7 +29,7 @@ const DatasetList = ({ list, selected, selectDataset, datasetDelete }) => {
         </select> 
       </div>
 
-      {list.map((dataset) => (
+      {sortedList.map((dataset) => (
         <div className="card card-body border-primary mb-3 flex-row justify-content-between align-items-center" key={dataset.loaded}>
           <div>
             <div>
@@ -28,6 +38,11 @@ const DatasetList = ({ list, selected, selectDataset, datasetDelete }) => {
             </div>
           </div>
           <div>
+            <button 
+              className="btn btn-outline-info mr-3"
+              onClick={() => modalDatasetOpen(dataset.loaded)}>
+              View
+            </button>
             <button 
               className={`btn ${selected === dataset.loaded ? 'btn-success' : 'btn-outline-success'} mr-3`}
               onClick={() => selectDataset(dataset.loaded)}>
@@ -53,6 +68,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   selectDataset: (value) => dispatch(selectDataset(value)),
   datasetDelete: (value) => dispatch(datasetDelete(value)),
+  modalDatasetOpen: (value) => dispatch(modalDatasetOpen(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DatasetList);

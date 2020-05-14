@@ -15,3 +15,12 @@ export const openReg = () => ({
 export const closeReg = () => ({
   type: actionType.MODAL_REG_CLOSE,
 });
+
+export const modalDatasetOpen = (id) => ({
+  type: actionType.MODAL_DATASET_OPEN,
+  payload: id,
+});
+
+export const modalDatasetClose = () => ({
+  type: actionType.MODAL_DATASET_CLOSE,
+});

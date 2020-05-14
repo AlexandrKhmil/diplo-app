@@ -7,6 +7,10 @@ const initialState = {
   reg: {
     isOpen: false,
   },
+  dataset: {
+    isOpen: false,
+    viewed: null,
+  }
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -39,6 +43,24 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         reg: { 
+          isOpen: false,
+        },
+      };
+    }
+    case actionType.MODAL_DATASET_OPEN: {
+      return {
+        ...state,
+        dataset: {
+          isOpen: true,
+          viewed: payload,
+        },
+      };
+    }
+    case actionType.MODAL_DATASET_CLOSE: {
+      return {
+        ...state,
+        dataset: {
+          ...state.dataset,
           isOpen: false,
         },
       };
