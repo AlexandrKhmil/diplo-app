@@ -4,6 +4,7 @@ import Loader from '../../dataset/Loader';
 import DatasetList from '../../dataset/DatasetList';
 import DataTable from '../../dataset/DataTable';
 import { algoGetInfo } from '../../../functions/algorithm';
+import { finhubToDataset } from '../../../functions/dataset';
 import styles from './styles.module.css';
 
 const Algorithm = ({ selectedDataset, ...props }) => {
@@ -68,25 +69,8 @@ const Algorithm = ({ selectedDataset, ...props }) => {
 
 const mapStateToProps = (state) => {
   const list = state.dataset.list;
-  const selectedId = state.dataset.selected
-  let selectedDataset = [];
-  if (list[selectedId]) {
-    let data = {};
-    for (let i = 0; i < list[selectedId].t.length; i++) {
-      data = {
-        ...data, 
-        [list[selectedId].t[i]]: { 
-          c: list[selectedId].c[i],
-          h: list[selectedId].h[i],
-          l: list[selectedId].l[i],
-          o: list[selectedId].o[i],
-          v: list[selectedId].v[i],
-        },
-      };
-    }
-    selectedDataset = data;
-    console.log(data)
-  }
+  const selected = state.dataset.selected
+  const selectedDataset = list[selected] ? finhubToDataset(list[selected]) : [];
 
   return {
     selectedDataset,

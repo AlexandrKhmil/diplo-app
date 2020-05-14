@@ -2,7 +2,6 @@ import React from 'react';
 import { timestampToData } from '../../../functions/timestamp';
 
 const DataTable = ({ data }) => {
-  console.log(data)
   return (
     <table className="table table-hover mb-0">
       <thead className="sticky-top" style={{backgroundColor: 'white'}}>
