@@ -7,7 +7,8 @@ const initialState = () => {
     list,
     loader: {
       isLoading: false,
-    } 
+    },
+    selected: null,
   };
 };
   
@@ -42,6 +43,13 @@ export default (state = initialState(), { type, payload }) => {
         loader: {
           isLoading: false,
         }
+      };
+    }
+
+    case actionType.DATASET_SELECT: {
+      return {
+        ...state,
+        selected: payload, 
       };
     }
     default: {

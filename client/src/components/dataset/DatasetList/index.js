@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { selectDataset } from '../../../actions/dataset';
 import { timestampToDataTime } from '../../../functions/timestamp';
 
-const DatasetList = ({ list }) => {
+const DatasetList = ({ list, selected, selectDataset }) => {
   return (
     <table className="table table-hover mb-0">
       <thead className="sticky-top" style={{backgroundColor: 'white'}}>
@@ -16,7 +17,9 @@ const DatasetList = ({ list }) => {
           <tr key={dataset.loaded}>
             <th scope="row">{timestampToDataTime(dataset.loaded)}</th>
             <td>
-              <button className="btn btn-secondary">
+              <button 
+                className={`btn ${selected === dataset.loaded ? 'btn-success' : 'btn-secondary'}`}
+                onClick={() => selectDataset(dataset.loaded)}>
                 Select
               </button>
             </td>
@@ -29,10 +32,11 @@ const DatasetList = ({ list }) => {
 
 const mapStateToProps = (state) => ({
   list: Object.values(state.dataset.list),
+  selected: state.dataset.selected,
 });
 
-const mapDispatchToProps = () => ({
-  
+const mapDispatchToProps = (dispatch) => ({
+  selectDataset: (value) => dispatch(selectDataset(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DatasetList);

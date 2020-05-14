@@ -1,7 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { timestampToData } from '../../../functions/timestamp';
 
 const DataTable = ({ data }) => {
+  console.log(data)
   return (
     <table className="table table-hover mb-0">
       <thead className="sticky-top" style={{backgroundColor: 'white'}}>
@@ -28,11 +29,4 @@ const DataTable = ({ data }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  data: state.data.data,
-});
-
-const mapDispatchToProps = {
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(DataTable);
+export default DataTable;

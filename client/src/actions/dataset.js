@@ -17,6 +17,11 @@ export const loaderGetFail = () => ({
   type: actionType.LOADER_GET_FAIL,
 });
 
+export const selectDataset = (id) => ({
+  type: actionType.DATASET_SELECT,
+  payload: id,
+});
+
 export const loadData = ({ resolution, start, end }) => (dispatch) => {
   dispatch(loaderGetRequest());
   axios.get(apiURL.FINHUB_GET({ resolution, start, end }))
