@@ -21,6 +21,9 @@ import DataPage from './components/pages/DataPage';
 
 import { accountAuth } from './actions/account';
 import { closeLogin, closeReg, tableClose, candleClose } from './actions/modal';
+import { timestampToDate } from './functions/timestamp';
+
+import * as colType from './constants/dataset-column-type';
 
 const App = ({
   isAuth,
@@ -37,6 +40,7 @@ const App = ({
   tableClose,
   tableHeaders,
   tableData,
+  tableType,
 
   candleStatus,
   candleClose,
@@ -98,7 +102,8 @@ const App = ({
           close={tableClose}>
           <DataTable 
             headers={tableHeaders}
-            data={tableData} />
+            data={tableData}
+            type={tableType} />
         </Modal>
 
         <Modal
@@ -129,6 +134,15 @@ const App = ({
 };
 
 const mapStateToProps = (state) => {
+  const candleType = state.modal.candle.type;
+  const candleState = state.modal.candle.data;
+  const candleData = candleState ? candleState.map((row, rowIndex) => {
+    if (rowIndex === 0) return row;
+    return row.map((item, index) => {
+      return candleType[index] === colType.TIMESTAMP ? timestampToDate(item) : item
+    });
+  }) : [];
+
   return {
     isAuth: state.account.isAuth,
     token: state.account.token,
@@ -139,9 +153,10 @@ const mapStateToProps = (state) => {
     tableIsOpen: state.modal.table.isOpen,
     tableHeaders: state.modal.table.headers,
     tableData: state.modal.table.data,
+    tableType: state.modal.table.type,
 
     candleStatus: state.modal.candle.isOpen,
-    candleData: state.modal.candle.data,
+    candleData,
   };
 };
 

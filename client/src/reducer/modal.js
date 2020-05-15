@@ -11,10 +11,12 @@ const initialState = {
     isOpen: false,
     headers: [],
     data: [],
+    type: [],
   },
   candle: {
     isOpen: false,
     data: [],
+    type: [],
   }
 };
 
@@ -70,6 +72,7 @@ export default (state = initialState, { type, payload }) => {
           isOpen: true,
           headers: payload.headers,
           data: payload.data,
+          type: payload.type,
         },
       };
     }
@@ -91,7 +94,8 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         candle: {
           isOpen: true,
-          data: payload,
+          data: payload.data,
+          type: payload.type,
         },
       };
     }

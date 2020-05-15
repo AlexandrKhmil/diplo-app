@@ -63,7 +63,10 @@ const LoaderCSV = ({ messageShow, tableOpen, datasetUserAdd }) => {
               return parseFloat(item);
             }
             case columnType.DATE: {
-              return new Date(item);
+              return parseInt(new Date(item).getTime() / 100);
+            }
+            case columnType.TIMESTAMP: {
+              return parseInt(item);
             }
             case columnType.STRING: {
               return String(item);
@@ -144,6 +147,7 @@ const LoaderCSV = ({ messageShow, tableOpen, datasetUserAdd }) => {
                       }))}>
                       <option value={columnType.NUMERIC}>Numeric</option>
                       <option value={columnType.DATE}>Data</option>
+                      <option value={columnType.TIMESTAMP}>Timestamp</option>
                       <option value={columnType.STRING}>Categorial String</option>
                     </select>
                     <label className="form-check-label pl-4 ml-sm-3">

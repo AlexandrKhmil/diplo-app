@@ -26,7 +26,7 @@ export default (state = initialState(), { type, payload }) => {
     case actionType.LOADER_GET_SUCCESS: {
       const list = {
         ...state.list,
-        [payload.loaded]: { ...payload },
+        [payload.id]: { ...payload },
       };
       localStorage.setItem('datasetlist', JSON.stringify(list));
       return {

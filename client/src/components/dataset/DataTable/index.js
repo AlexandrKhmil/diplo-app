@@ -1,8 +1,9 @@
 import React from 'react';
+import * as colType from '../../../constants/dataset-column-type';
+import { timestampToDate } from '../../../functions/timestamp';
 import styles from './styles.module.css';
 
-const DataTable = ({ headers, data = [] }) => {
-
+const DataTable = ({ headers, data = [], type = [] }) => {
   return (
     <div className={styles.wrapper}>
       <table className="table table-hover mb-0">
@@ -13,7 +14,8 @@ const DataTable = ({ headers, data = [] }) => {
               {headers.map((value, index) => (
                 <th className="border-top-0" scope="col" key={index}>
                   <button className="btn btn-link text-dark">
-                    {value}
+                    <div>{value}</div>
+                    <div>{type[index] && `[${type[index]}]`}</div>
                   </button>
                 </th>
               ))}
@@ -28,7 +30,7 @@ const DataTable = ({ headers, data = [] }) => {
                 <td 
                   className={`${index === 0 ? 'font-weight-bold' : ''}`} 
                   key={index}>
-                  {item}
+                  {type[index] === colType.TIMESTAMP ? timestampToDate(item) : item}
                 </td>
               ))}
             </tr>

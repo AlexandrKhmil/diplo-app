@@ -68,6 +68,7 @@ const DatasetList = ({
                   onClick={() => tableOpen({
                     headers: dataset.meta.headers,
                     data: dataset.data,
+                    type: dataset.meta.type,
                   })}>
                   View
                 </button>
@@ -75,7 +76,10 @@ const DatasetList = ({
               <div className="col-6 mb-3 col-md-auto mb-3 mb-lg-0">
                 <button 
                   className="btn btn-outline-info w-100"
-                  onClick={() => candleOpen([dataset.meta.headers, ...dataset.data])}>
+                  onClick={() => candleOpen({
+                    data: [dataset.meta.headers, ...dataset.data],
+                    type: dataset.meta.type,
+                  })}>
                   Chart
                 </button>
               </div>
