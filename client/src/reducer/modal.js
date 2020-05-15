@@ -22,6 +22,7 @@ export default (state = initialState, { type, payload }) => {
   switch (type) {
     // LOGIN
     case actionType.MODAL_LOGIN_OPEN: {
+      document.body.setAttribute('style', 'overflow: hidden;');
       return {
         ...state,
         login: { 
@@ -30,6 +31,7 @@ export default (state = initialState, { type, payload }) => {
       };
     }
     case actionType.MODAL_LOGIN_CLOSE: {
+      document.body.removeAttribute('style');
       return {
         ...state,
         login: { 
@@ -40,6 +42,7 @@ export default (state = initialState, { type, payload }) => {
 
     // REGISTRATION
     case actionType.MODAL_REG_OPEN: {
+      document.body.setAttribute('style', 'overflow: hidden;');
       return {
         ...state,
         reg: { 
@@ -48,6 +51,7 @@ export default (state = initialState, { type, payload }) => {
       };
     }
     case actionType.MODAL_REG_CLOSE: {
+      document.body.removeAttribute('style');
       return {
         ...state,
         reg: { 
@@ -58,6 +62,7 @@ export default (state = initialState, { type, payload }) => {
 
     // DATASET TABLE
     case actionType.MODAL_TABLE_OPEN: {
+      document.body.setAttribute('style', 'overflow: hidden;');
       return {
         ...state,
         table: {
@@ -69,6 +74,7 @@ export default (state = initialState, { type, payload }) => {
       };
     }
     case actionType.MODAL_TABLE_CLOSE: {
+      document.body.removeAttribute('style');
       return {
         ...state,
         table: {
@@ -80,6 +86,7 @@ export default (state = initialState, { type, payload }) => {
 
     // DATASET CANDLE
     case actionType.MODAL_CANDLE_OPEN: {
+      document.body.setAttribute('style', 'overflow: hidden;');
       return {
         ...state,
         candle: {
@@ -89,6 +96,7 @@ export default (state = initialState, { type, payload }) => {
       };
     }
     case actionType.MODAL_CANDLE_CLOSE: {
+      document.body.removeAttribute('style');
       return {
         ...state,
         candle: {

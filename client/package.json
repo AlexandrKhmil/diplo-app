@@ -10,6 +10,7 @@
     "axios": "^0.19.2",
     "react": "^16.13.1",
     "react-alert": "^7.0.0",
+    "react-csv": "^2.0.3",
     "react-dom": "^16.13.1",
     "react-google-charts": "^3.0.15",
     "react-redux": "^7.2.0",
