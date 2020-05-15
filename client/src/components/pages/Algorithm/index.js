@@ -4,7 +4,7 @@ import Loader from '../../dataset/Loader';
 import DatasetList from '../../dataset/DatasetList';
 import DataTable from '../../dataset/DataTable';
 import { algoGetInfo } from '../../../functions/algorithm';
-import { finhubToDataset } from '../../../functions/dataset';
+import { finhubToTable } from '../../../functions/dataset';
 import styles from './styles.module.css';
 
 const AlgorithmPage = ({ selectedDataset, ...props }) => {
@@ -70,7 +70,7 @@ const AlgorithmPage = ({ selectedDataset, ...props }) => {
 const mapStateToProps = (state) => {
   const list = state.dataset.list;
   const selected = state.dataset.selected
-  const selectedDataset = list[selected] ? finhubToDataset(list[selected]) : [];
+  const selectedDataset = list[selected] ? finhubToTable(list[selected]) : [];
 
   return {
     selectedDataset,

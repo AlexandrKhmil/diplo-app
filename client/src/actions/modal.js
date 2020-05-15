@@ -16,20 +16,20 @@ export const closeReg = () => ({
   type: actionType.MODAL_REG_CLOSE,
 });
 
-export const modalDatasetTableOpen = (id) => ({
-  type: actionType.MODAL_DATASET_TABLE_OPEN,
-  payload: id,
+export const tableOpen = (data) => ({
+  type: actionType.MODAL_TABLE_OPEN,
+  payload: data,
 });
 
-export const modalDatasetTableClose = () => ({
-  type: actionType.MODAL_DATASET_TABLE_CLOSE,
+export const tableClose = () => ({
+  type: actionType.MODAL_TABLE_CLOSE,
 });
 
-export const modalDatasetChartCandleOpen = (id) => ({
-  type: actionType.MODAL_DATASET_CANDLE_OPEN,
-  payload: id,
+export const candleOpen = (data) => ({
+  type: actionType.MODAL_CANDLE_OPEN,
+  payload: data,
 });
 
-export const modalDatasetChartCandleClose = () => ({
-  type: actionType.MODAL_DATASET_CANDLE_CLOSE,
+export const candleClose = () => ({
+  type: actionType.MODAL_CANDLE_CLOSE,
 });

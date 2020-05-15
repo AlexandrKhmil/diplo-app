@@ -7,13 +7,14 @@ const initialState = {
   reg: {
     isOpen: false,
   },
-  datasetTable: {
+  table: {
     isOpen: false,
-    viewed: null,
+    headers: [],
+    data: [],
   },
-  datasetCandle: {
+  candle: {
     isOpen: false,
-    viewed: null,
+    data: [],
   }
 };
 
@@ -56,40 +57,42 @@ export default (state = initialState, { type, payload }) => {
     }
 
     // DATASET TABLE
-    case actionType.MODAL_DATASET_TABLE_OPEN: {
+    case actionType.MODAL_TABLE_OPEN: {
       return {
         ...state,
-        datasetTable: {
+        table: {
+          ...state.table,
           isOpen: true,
-          viewed: payload,
+          headers: payload.headers,
+          data: payload.data,
         },
       };
     }
-    case actionType.MODAL_DATASET_TABLE_CLOSE: {
+    case actionType.MODAL_TABLE_CLOSE: {
       return {
         ...state,
-        datasetTable: {
-          ...state.dataset,
+        table: {
+          ...state.table,
           isOpen: false,
         },
       };
     }
 
     // DATASET CANDLE
-    case actionType.MODAL_DATASET_CANDLE_OPEN: {
+    case actionType.MODAL_CANDLE_OPEN: {
       return {
         ...state,
-        datasetCandle: {
+        candle: {
           isOpen: true,
-          viewed: payload,
+          data: payload,
         },
       };
     }
-    case actionType.MODAL_DATASET_CANDLE_CLOSE: {
+    case actionType.MODAL_CANDLE_CLOSE: {
       return {
         ...state,
-        datasetCandle: {
-          ...state.dataset,
+        candle: {
+          ...state.candle,
           isOpen: false,
         },
       };

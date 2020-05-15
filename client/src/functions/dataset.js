@@ -1,39 +1,30 @@
-import { timestampToData } from './timestamp';
+import { timestampToDate } from './timestamp';
 import * as datasetListSortType from '../constants/dataset-list-sort-type';
 
-export const finhubToDataset = (data) => {
-  let result = {};
-  for (let i = 0; i < data.t.length; i++) {
-    result = {
-      ...result, 
-      [data.t[i]]: [ 
-        data.c[i],
-        data.h[i],
-        data.l[i],
-        data.o[i],
-        // data.v[i],
-      ],
-    };
+export const finhubToTable = (dataset) => {
+  const headers = ['Data', 'Close', 'High', 'Low', 'Open'];
+  let data = {};
+  for (let i = 0; i < dataset.t.length; i++) {
+    const row = [dataset.c[i], dataset.h[i], dataset.l[i], dataset.o[i],];
+    data = { ...data, [dataset.t[i]]: row };
   }
-  return result;
+  return { data, headers };
 };
 
-export const finhubToCandle = (data, headers) => {
-  let result = [['day', 'Price', 'Open', 'Close', 'High']];
-  for (let i = 0; i < data.t.length; i++) {
-    result = [
-      ...result, 
-      [
-      timestampToData(data.t[i]), 
-      data.l[i],
-      data.o[i],
-      data.c[i],
-      data.h[i],
-      // data.v[i],
-    ],
+export const finhubToCandle = (dataset, headers) => {
+  let data = [['day', 'Price', 'Open', 'Close', 'High']];
+
+  for (let i = 0; i < dataset.t.length; i++) {
+    const row = [
+      timestampToDate(dataset.t[i]), 
+      dataset.l[i], 
+      dataset.o[i], 
+      dataset.c[i], 
+      dataset.h[i], 
     ];
+    data = [...data, row];
   }
-  return result;
+  return data;
 };
 
 export const datasetListSort = (list, sortType) => {

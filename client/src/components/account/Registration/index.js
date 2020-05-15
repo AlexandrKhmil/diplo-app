@@ -83,7 +83,4 @@ const mapDispatchToProps = (dispatch) => ({
   messageShow: (value) => dispatch(messageShow(value)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Registration);
+export default connect(mapStateToProps, mapDispatchToProps)(Registration);

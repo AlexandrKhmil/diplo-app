@@ -22,26 +22,24 @@ const Modal = ({ status, title, children, close, dialogStyles }) => {
       <div
         className={styles.modalBackdrop}
         ref={ref}
-        onClick={backdropClose}>
-        <div className={`modal-dialog w-100 ${styles.autoWidth}`}>
-          <div className="modal-content">
-            <div className="modal-header">
-              {title && (
-                <h5 className="modal-title">{title}</h5>
-              )}
-              <button 
-                onClick={close}
-                className="close"
-                aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              {children}
-            </div>
+        onClick={backdropClose}> 
+        <div className={styles.content}>
+          <div className="modal-header">
+            {title && (
+              <h5 className="modal-title">{title}</h5>
+            )}
+            <button 
+              onClick={close}
+              className="close"
+              aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div className="modal-body">
+            {children}
           </div>
         </div>
-      </div>
+      </div> 
     </CSSTransition>
   );
 };

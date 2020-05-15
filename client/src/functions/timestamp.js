@@ -1,4 +1,4 @@
-export const timestampToData = (timestamp) => {
+export const timestampToDate = (timestamp) => {
   let date = new Date(timestamp * 1000);
   let day = date.getDate();
   day = day < 10 ? `0${day}` : day;
@@ -8,7 +8,7 @@ export const timestampToData = (timestamp) => {
   return `${day}.${month}.${year}`;
 };
 
-export const timestampToDataTime = (timestamp) => {
+export const timestampToDateTime = (timestamp) => {
   let date = new Date(timestamp * 1000);
   let day = date.getDate();
   day = day < 10 ? `0${day}` : day;

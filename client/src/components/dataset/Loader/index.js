@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { loadData } from '../../../actions/dataset';
+import { loadDataFinhub } from '../../../actions/dataset';
 import { messageShow } from '../../../actions/message';
 import * as msgType from '../../../constants/message-type';
 
-const Loader = ({ isLoading, messageShow, loadData }) => {
+const Loader = ({ isLoading, messageShow, loadDataFinhub }) => {
   const [where, setWhere] = useState('finnhub.io');
   const [which, setWhich] = useState('AAPL');
   const [resolution, setResolution] = useState('W');
@@ -20,7 +20,7 @@ const Loader = ({ isLoading, messageShow, loadData }) => {
         text: 'Укажите даты!' 
       });
     }
-    if (!isLoading) loadData({ 
+    if (!isLoading) loadDataFinhub({ 
       where,
       resolution,
       start: Date.parse(start) / 1000, 
@@ -101,7 +101,13 @@ const Loader = ({ isLoading, messageShow, loadData }) => {
           className="btn btn-primary d-flex 
           justify-content-between align-items-center w-100"
           disabled={isLoading}>
-          {isLoading && <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"> </span>}
+          {isLoading && (
+            <span 
+              className="spinner-border spinner-border-sm mr-2" 
+              role="status" 
+              aria-hidden="true">
+            </span>
+          )}
           <span className="ml-auto">
             {!isLoading ? 'Load Data' : 'Loading'}
           </span>
@@ -117,7 +123,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   messageShow: (value) => dispatch(messageShow(value)),
-  loadData: (value) => dispatch(loadData(value)),
+  loadDataFinhub: (value) => dispatch(loadDataFinhub(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Loader);

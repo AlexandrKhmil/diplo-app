@@ -26,6 +26,14 @@
   transition: opacity 200ms;
 }
 
+.content {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 0.25rem;
+  max-width: 90vw;
+}
+
 .autoWidth {
   max-width: none;
   width: auto;

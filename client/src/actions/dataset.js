@@ -27,12 +27,13 @@ export const datasetDelete = (id) => ({
   payload: id,
 });
 
-export const loadData = ({ resolution, start, end }) => (dispatch) => {
+export const loadDataFinhub = ({ resolution, start, end }) => (dispatch) => {
   dispatch(loaderGetRequest());
   axios.get(apiURL.FINHUB_GET({ resolution, start, end }))
     .then((res) => {
       res.data['loaded'] = parseInt(new Date().getTime() / 1000);
       res.data['headers'] = ['Data', 'Open', 'Close', 'High', 'Low'];
+      res.data['source'] = 'finhub.com';
       dispatch(loaderGetSuccess(res.data));
       dispatch(messageShow({ 
         type: msgType.MESSAGE_SUCCESS, 
