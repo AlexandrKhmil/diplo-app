@@ -15,7 +15,6 @@ const DatasetList = ({
   datasetDelete, 
   tableOpen,
   candleOpen,
-
   wrapped,
 }) => {
   const [sort, setSort] = useState(sortType.DATASET_DATE_DESC);
