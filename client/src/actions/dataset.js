@@ -4,16 +4,16 @@ import * as actionType from '../constants/action-type';
 import * as apiURL from '../constants/api-url';
 import * as msgType from '../constants/message-type';
 
-export const loaderGetRequest = () => ({
+export const finhubGetRequest = () => ({
   type: actionType.LOADER_GET_REQUEST,
 });
 
-export const loaderGetSuccess = (data) => ({
+export const finhubGetSuccess = (data) => ({
   type: actionType.LOADER_GET_SUCCESS,
   payload: data,
 });
 
-export const loaderGetFail = () => ({
+export const finhubGetFail = () => ({
   type: actionType.LOADER_GET_FAIL,
 });
 
@@ -28,13 +28,13 @@ export const datasetDelete = (id) => ({
 });
 
 export const loadDataFinhub = ({ resolution, start, end }) => (dispatch) => {
-  dispatch(loaderGetRequest());
+  dispatch(finhubGetRequest());
   axios.get(apiURL.FINHUB_GET({ resolution, start, end }))
     .then((res) => {
       res.data['loaded'] = parseInt(new Date().getTime() / 1000);
       res.data['headers'] = ['Data', 'Open', 'Close', 'High', 'Low'];
       res.data['source'] = 'finhub.com';
-      dispatch(loaderGetSuccess(res.data));
+      dispatch(finhubGetSuccess(res.data));
       dispatch(messageShow({ 
         type: msgType.MESSAGE_SUCCESS, 
         title: 'Успех!', 
@@ -42,7 +42,7 @@ export const loadDataFinhub = ({ resolution, start, end }) => (dispatch) => {
       }));
     })
     .catch((error) => {
-      dispatch(loaderGetFail());
+      dispatch(finhubGetFail());
       console.log(error);
       dispatch(messageShow({ 
         type: msgType.MESSAGE_ERROR, 

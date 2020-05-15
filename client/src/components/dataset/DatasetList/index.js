@@ -41,6 +41,7 @@ const DatasetList = ({
         </select> 
       </div>
       <div className={wrapped && styles.dataListWrapper}> 
+        {sortedList.length === 0 && <p>No datasets were loaded...</p>} 
         {sortedList.map((dataset) => (
           <div 
             className="card card-body border-primary mb-3 flex-md-row justify-content-between align-items-md-center" 

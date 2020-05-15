@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './styles.module.css';
 
-const DataTable = ({ headers, data }) => {
+const DataTable = ({ headers, data = [] }) => {
 
   return (
     <div className={styles.wrapper}>

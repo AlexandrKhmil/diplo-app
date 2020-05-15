@@ -15,6 +15,7 @@ const DataPage = () => {
           </div>
           <div className="col-12 col-md-6 mb-3">
             <div className="card card-body border-primary">
+              <h2>Data Loader</h2>
               <Loader />
             </div>
           </div>
