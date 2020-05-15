@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import CSVReader from 'react-csv-reader';
+import shortid from 'shortid';
 import { datasetUserAdd } from '../../../actions/dataset';
 import { tableOpen } from '../../../actions/modal';
 import { messageShow } from '../../../actions/message';
@@ -47,7 +48,7 @@ const LoaderCSV = ({ messageShow, tableOpen, datasetUserAdd }) => {
     }
     
     const dataset = {
-      id: parseInt(new Date().getTime() / 1000),
+      id: shortid.generate(),
       meta: {
         source: sourceType.USER_FILE,
         loaded: parseInt(new Date().getTime() / 1000),
@@ -55,7 +56,24 @@ const LoaderCSV = ({ messageShow, tableOpen, datasetUserAdd }) => {
         type,
         key,
       },
-      data,
+      data: data.map((row) => {
+        return row.map((item, index) => {
+          switch (type[index]) {
+            case columnType.NUMERIC: {
+              return parseFloat(item);
+            }
+            case columnType.DATE: {
+              return new Date(item);
+            }
+            case columnType.STRING: {
+              return String(item);
+            }
+            default: {
+              return String(item);
+            }
+          }
+        })
+      }),
     };
     datasetUserAdd(dataset);
     messageShow({

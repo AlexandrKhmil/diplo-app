@@ -47,13 +47,12 @@ export default (state = initialState(), { type, payload }) => {
     }
 
     case actionType.DATASET_USER_ADD: {
+      const list = { ...state.list, [payload.id]: { ...payload }, };
+      localStorage.setItem('datasetlist', JSON.stringify(list));
       return {
         ...state,
-        list: {
-          ...state.list,
-          [payload.id]: { ...payload },
-        }
-      }
+        list,
+      };
     }
 
     case actionType.DATASET_SELECT: {

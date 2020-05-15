@@ -4,11 +4,7 @@ import { CSVLink } from "react-csv";
 import { selectDataset, datasetDelete } from '../../../actions/dataset';
 import { tableOpen, candleOpen } from '../../../actions/modal';
 import { timestampToDateTime } from '../../../functions/timestamp';
-import { 
-  datasetListSort, 
-  finhubToTable, 
-  finhubToCandle 
-} from '../../../functions/dataset';
+import { datasetListSort } from '../../../functions/dataset';
 import * as sortType from '../../../constants/dataset-list-sort-type';
 import styles from './styles.module.css';
 
@@ -45,16 +41,16 @@ const DatasetList = ({
         {sortedList.map((dataset) => (
           <div 
             className="card card-body border-primary mb-3 flex-md-row justify-content-between align-items-md-center" 
-            key={dataset.loaded}>
+            key={dataset.id}>
 
             <div className="d-flex flex-md-column mb-3 mb-md-0">
               <div>
                 <span className="font-weight-bold">Loaded: </span> 
-                <span>{timestampToDateTime(dataset.loaded)}</span>
+                <span>{timestampToDateTime(dataset.meta.loaded)}</span>
               </div>
               <div className="ml-3 ml-md-0">
                 <span className="font-weight-bold">Source: </span> 
-                <span>{dataset.source}</span>
+                <span>{dataset.meta.source}</span>
               </div>
             </div>
 
@@ -63,35 +59,38 @@ const DatasetList = ({
                 <CSVLink 
                   className="btn btn-outline-primary w-100"
                   filename={"dataset.csv"}
-                  data={finhubToCandle(dataset)}>
+                  data={[dataset.meta.headers, ...dataset.data]}> 
                   Download
                 </CSVLink>
               </div>
               <div className="col-6 col-md-auto mb-3 mb-lg-0">
                 <button 
                   className="btn btn-outline-info w-100"
-                  onClick={() => tableOpen(finhubToTable(dataset))}>
+                  onClick={() => tableOpen({
+                    headers: dataset.meta.headers,
+                    data: dataset.data,
+                  })}>
                   View
                 </button>
               </div>
               <div className="col-6 mb-3 col-md-auto mb-3 mb-lg-0">
                 <button 
                   className="btn btn-outline-info w-100"
-                  onClick={() => candleOpen(finhubToCandle(dataset))}>
+                  onClick={() => candleOpen([dataset.meta.headers, ...dataset.data])}>
                   Chart
                 </button>
               </div>
               <div className="col-6 col-md-auto">
                 <button 
-                  className={`btn w-100 ${selected === dataset.loaded ? 'btn-success' : 'btn-outline-success'}`}
-                  onClick={() => selectDataset(dataset.loaded)}>
+                  className={`btn w-100 ${selected === dataset.id ? 'btn-success' : 'btn-outline-success'}`}
+                  onClick={() => selectDataset(dataset.id)}>
                   Select
                 </button>
               </div>
               <div className="col-6 col-md-auto">
                 <button 
                   className="btn btn-outline-danger w-100"
-                  onClick={() => datasetDelete(dataset.loaded)}>
+                  onClick={() => datasetDelete(dataset.id)}>
                   Delete
                 </button>
               </div>

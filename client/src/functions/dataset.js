@@ -36,10 +36,10 @@ export const finhubToCandle = (dataset, headers) => {
 export const datasetListSort = (list, sortType) => {
   switch (sortType) {
     case datasetListSortType.DATASET_DATE_ASC: {
-      return list.sort((a, b) => a.loaded - b.loaded);
+      return list.sort((a, b) => a.meta.loaded - b.meta.loaded);
     }
     case datasetListSortType.DATASET_DATE_DESC: {
-      return list.sort((a, b) => b.loaded - a.loaded);
+      return list.sort((a, b) => b.meta.loaded - a.meta.loaded);
     }
     default: {
       return list;
