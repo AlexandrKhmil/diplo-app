@@ -46,6 +46,16 @@ export default (state = initialState(), { type, payload }) => {
       };
     }
 
+    case actionType.DATASET_USER_ADD: {
+      return {
+        ...state,
+        list: {
+          ...state.list,
+          [payload.id]: { ...payload },
+        }
+      }
+    }
+
     case actionType.DATASET_SELECT: {
       return {
         ...state,

@@ -27,6 +27,11 @@ export const datasetDelete = (id) => ({
   payload: id,
 });
 
+export const datasetUserAdd = (dataset) => ({
+  type: actionType.DATASET_USER_ADD,
+  payload: dataset,
+});
+
 export const loadDataFinhub = ({ resolution, start, end }) => (dispatch) => {
   dispatch(finhubGetRequest());
   axios.get(apiURL.FINHUB_GET({ resolution, start, end }))

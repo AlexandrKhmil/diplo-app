@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import LoaderFinhub from '../LoaderFinhub';
 import LoaderCSV from '../LoaderCSV';
-import ProcessorCSV from '../ProcessorCSV';
 import * as sourceType from '../../../constants/dataset-source-type';
 
 const Loader = () => {
@@ -20,12 +19,7 @@ const Loader = () => {
         </select>  
       </div>
       {where === sourceType.FINHUB && <LoaderFinhub />}
-      {where === sourceType.USER_FILE && (
-        <>
-          <LoaderCSV />
-          <ProcessorCSV />
-        </>
-      )}
+      {where === sourceType.USER_FILE && <LoaderCSV />}
     </>
   );
 };
