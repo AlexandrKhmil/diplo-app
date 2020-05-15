@@ -1,9 +1,8 @@
 import React from 'react';
-import { timestampToDate } from '../../../functions/timestamp';
 import styles from './styles.module.css';
 
 const DataTable = ({ headers, data }) => {
-  console.log(data)
+
   return (
     <div className={styles.wrapper}>
       <table className="table table-hover mb-0">
@@ -23,14 +22,17 @@ const DataTable = ({ headers, data }) => {
         )}
         
         <tbody>
-          {Object.entries(data).map((row) => 
-            <tr key={row[0].toString()}>
-              <th scope="row">{timestampToDate(row[0])}</th>
-              {row[1].map((item, index) => (
-                <td key={index}>{item}</td>
+          {data.map((row, index) => (
+            <tr key={index}>
+              {row.map((item, index) => (
+                <td 
+                  className={`${index === 0 ? 'font-weight-bold' : ''}`} 
+                  key={index}>
+                  {item}
+                </td>
               ))}
             </tr>
-          )}
+          ))}
         </tbody>
 
       </table>

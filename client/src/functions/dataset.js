@@ -2,11 +2,17 @@ import { timestampToDate } from './timestamp';
 import * as datasetListSortType from '../constants/dataset-list-sort-type';
 
 export const finhubToTable = (dataset) => {
-  const headers = ['Data', 'Close', 'High', 'Low', 'Open'];
-  let data = {};
+  const headers = ['Data', 'Low', 'Open', 'Close', 'High',  ];
+  let data = [];
   for (let i = 0; i < dataset.t.length; i++) {
-    const row = [dataset.c[i], dataset.h[i], dataset.l[i], dataset.o[i],];
-    data = { ...data, [dataset.t[i]]: row };
+    const row = [
+      timestampToDate(dataset.t[i]), 
+      dataset.l[i], 
+      dataset.o[i], 
+      dataset.c[i], 
+      dataset.h[i],
+    ];
+    data = [ ...data, row ];
   }
   return { data, headers };
 };
