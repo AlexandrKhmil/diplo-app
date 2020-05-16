@@ -21,7 +21,7 @@ import DataPage from './components/pages/DataPage';
 
 import { accountAuth } from './actions/account';
 import { closeLogin, closeReg, tableClose, candleClose } from './actions/modal';
-import { timestampToDate } from './functions/timestamp';
+import { timestampToDateTime } from './functions/timestamp';
 
 import * as colType from './constants/dataset-column-type';
 
@@ -112,7 +112,7 @@ const App = ({
           close={candleClose}>
           <Chart 
             width={'calc(80vw - 60px)'}
-            height={'100%'}
+            height={'80vh'}
             chartType="CandlestickChart"
             loader={<div>Loading Chart</div>}
             data={candleData}
@@ -139,7 +139,7 @@ const mapStateToProps = (state) => {
   const candleData = candleState ? candleState.map((row, rowIndex) => {
     if (rowIndex === 0) return row;
     return row.map((item, index) => {
-      return candleType[index] === colType.TIMESTAMP ? timestampToDate(item) : item
+      return candleType[index] === colType.TIMESTAMP ? timestampToDateTime(item) : item
     });
   }) : [];
 

@@ -36,9 +36,9 @@ export const datasetUserAdd = (dataset) => ({
   payload: dataset,
 });
 
-export const loadDataFinhub = ({ resolution, start, end }) => (dispatch) => {
+export const loadDataFinhub = ({ symbol, resolution, start, end }) => (dispatch) => {
   dispatch(finhubGetRequest());
-  axios.get(apiURL.FINHUB_GET({ resolution, start, end }))
+  axios.get(apiURL.FINHUB_GET({ symbol, resolution, start, end }))
     .then((res) => {
       const dataset = {
         id: shortid.generate(), 
@@ -48,6 +48,8 @@ export const loadDataFinhub = ({ resolution, start, end }) => (dispatch) => {
           type: [colType.TIMESTAMP, colType.NUMERIC, colType.NUMERIC, colType.NUMERIC, colType.NUMERIC],
           source: sourceType.FINHUB,
           key: 0,
+          symbol,
+          resolution,
         },
         data: finhubToData(res.data),
       };

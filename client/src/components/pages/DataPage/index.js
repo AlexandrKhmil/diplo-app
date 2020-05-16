@@ -5,7 +5,7 @@ import DatasetList from '../../dataset/DatasetList';
 import * as sourceType from '../../../constants/dataset-source-type';
 
 const DataPage = () => {
-  const [where, setWhere] = useState(sourceType.USER_FILE);
+  const [where, setWhere] = useState(sourceType.FINHUB);
 
   return (
     <main>
@@ -28,8 +28,8 @@ const DataPage = () => {
                   value={where}
                   onChange={(e) => setWhere(e.target.value)}>
                   <option value={sourceType.USER_FILE}>My CSV File</option>
-                  <option value={sourceType.FINHUB}>finhub.com</option>
-                </select>  
+                  <option value={sourceType.FINHUB}>finhub.io</option>
+                </select>
               </div>
               {where === sourceType.FINHUB && <LoaderFinhub />}
               {where === sourceType.USER_FILE && <LoaderCSV />}

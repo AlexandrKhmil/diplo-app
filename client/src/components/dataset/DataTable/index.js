@@ -1,6 +1,6 @@
 import React from 'react';
 import * as colType from '../../../constants/dataset-column-type';
-import { timestampToDate } from '../../../functions/timestamp';
+import { timestampToDateTime } from '../../../functions/timestamp';
 import styles from './styles.module.css';
 
 const DataTable = ({ headers, data = [], type = [] }) => {
@@ -30,7 +30,7 @@ const DataTable = ({ headers, data = [], type = [] }) => {
                 <td 
                   className={`${index === 0 ? 'font-weight-bold' : ''}`} 
                   key={index}>
-                  {type[index] === colType.TIMESTAMP ? timestampToDate(item) : item}
+                  {type[index] === colType.TIMESTAMP ? timestampToDateTime(item) : item}
                 </td>
               ))}
             </tr>

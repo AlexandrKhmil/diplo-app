@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import { loadDataFinhub } from '../../../actions/dataset';
 import { messageShow } from '../../../actions/message';
 import * as msgType from '../../../constants/message-type';
+import * as finhubRes from '../../../constants/finhub-resolution';
+import * as finhubSymbol from '../../../constants/finhub-symbol';
 
 const LoaderFinhub = ({ isLoading, messageShow, loadDataFinhub }) => {
-  const [which, setWhich] = useState('AAPL');
-  const [resolution, setResolution] = useState('W');
+  const [symbol, setSymbol] = useState(finhubSymbol.APPLE.symbol);
+  const [resolution, setResolution] = useState(finhubRes.ONE_MONTH.code);
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
 
@@ -20,6 +22,7 @@ const LoaderFinhub = ({ isLoading, messageShow, loadDataFinhub }) => {
       });
     }
     if (!isLoading) loadDataFinhub({
+      symbol,
       resolution,
       start: Date.parse(start) / 1000, 
       end: Date.parse(end) / 1000, 
@@ -28,30 +31,40 @@ const LoaderFinhub = ({ isLoading, messageShow, loadDataFinhub }) => {
 
   return (
     <form onSubmit={onSubmit}>
-      {/* Which */}
+      {/* Symbol */}
       <div className="form-group">
-        <label htmlFor="which">Which</label>
-        <input 
-          type="text"
-          className="form-control"
-          name="which"
-          onChange={(e) => setWhich(e.target.value)}
-          value={which}
-          disabled={true}
-        />
+        <label htmlFor="symbol">Symbol</label>
+        <select 
+          className="custom-select" 
+          id="symbol" 
+          value={symbol}
+          onChange={(e) => setSymbol(e.target.value)}
+          disabled={isLoading}>
+          <option value={finhubSymbol.APPLE.symbol}>{finhubSymbol.APPLE.desc}</option>
+          <option value={finhubSymbol.FACEBOOK.symbol}>{finhubSymbol.FACEBOOK.desc}</option>
+          <option value={finhubSymbol.MICROSOFT.symbol}>{finhubSymbol.MICROSOFT.desc}</option>
+          <option value={finhubSymbol.GOOGLE.symbol}>{finhubSymbol.GOOGLE.desc}</option>
+        </select>
       </div>
 
       {/* Resolution */}
       <div className="form-group">
         <label htmlFor="resolution">Resolution</label>
-        <input 
-          type="text"
-          className="form-control"
-          name="resolution"
-          onChange={(e) => setResolution(e.target.value)}
+        <select 
+          className="custom-select" 
+          id="resolution" 
           value={resolution}
-          disabled={true}
-        />
+          onChange={(e) => setResolution(e.target.value)}
+          disabled={isLoading}>
+          <option value={finhubRes.ONE_MINUTE.code}>{finhubRes.ONE_MINUTE.desc}</option>
+          <option value={finhubRes.FIVE_MINUTES.code}>{finhubRes.FIVE_MINUTES.desc}</option>
+          <option value={finhubRes.FIFTEEN_MINUTES.code}>{finhubRes.FIFTEEN_MINUTES.desc}</option>
+          <option value={finhubRes.THIRTY_MINUTES.code}>{finhubRes.THIRTY_MINUTES.desc}</option>
+          <option value={finhubRes.ONE_HOUR.code}>{finhubRes.ONE_HOUR.desc}</option>
+          <option value={finhubRes.ONE_DAY.code}>{finhubRes.ONE_DAY.desc}</option>
+          <option value={finhubRes.ONE_WEEK.code}>{finhubRes.ONE_WEEK.desc}</option>
+          <option value={finhubRes.ONE_MONTH.code}>{finhubRes.ONE_MONTH.desc}</option>
+        </select>
       </div>
 
       {/* From (Start) */}
@@ -63,8 +76,7 @@ const LoaderFinhub = ({ isLoading, messageShow, loadDataFinhub }) => {
           name="start"
           onChange={(e) => setStart(e.target.value)}
           value={start}
-          disabled={isLoading}
-        />
+          disabled={isLoading} />
       </div>
 
       {/* To (End) */}
@@ -76,8 +88,7 @@ const LoaderFinhub = ({ isLoading, messageShow, loadDataFinhub }) => {
           name="end"
           onChange={(e) => setEnd(e.target.value)}
           value={end}
-          disabled={isLoading}
-        />
+          disabled={isLoading} />
       </div>
 
       {/* Submit */}

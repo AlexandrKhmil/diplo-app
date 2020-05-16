@@ -6,6 +6,8 @@ import { tableOpen, candleOpen } from '../../../actions/modal';
 import { timestampToDateTime } from '../../../functions/timestamp';
 import { datasetListSort } from '../../../functions/dataset';
 import * as sortType from '../../../constants/dataset-list-sort-type';
+import * as finhubRes from '../../../constants/finhub-resolution';
+import * as finhubSymbol from '../../../constants/finhub-symbol';
 import styles from './styles.module.css';
 
 const DatasetList = ({ 
@@ -42,8 +44,8 @@ const DatasetList = ({
             className="card card-body border-primary mb-3 flex-md-row justify-content-between align-items-md-center" 
             key={dataset.id}>
 
-            <div className="d-flex flex-md-column mb-3 mb-md-0">
-              <div>
+            <div className="d-flex flex-wrap flex-md-column mb-3 mb-md-0">
+              <div className="ml-3 ml-md-0">
                 <span className="font-weight-bold">Loaded: </span> 
                 <span>{timestampToDateTime(dataset.meta.loaded)}</span>
               </div>
@@ -51,6 +53,30 @@ const DatasetList = ({
                 <span className="font-weight-bold">Source: </span> 
                 <span>{dataset.meta.source}</span>
               </div>
+              {dataset.meta.symbol && (
+                <div className="ml-3 ml-md-0">
+                  <span className="font-weight-bold">Symbol: </span> 
+                  <span>
+                    {Object.values(finhubSymbol)
+                      .find((symbol) => {
+                        return symbol.symbol === dataset.meta.symbol
+                      }).desc
+                    }
+                  </span>
+                </div>
+              )}
+              {dataset.meta.resolution && (
+                <div className="ml-3 ml-md-0">
+                  <span className="font-weight-bold">Resolution: </span> 
+                  <span>
+                    {Object.values(finhubRes)
+                      .find((resol) => {
+                        return resol.code === dataset.meta.resolution
+                      }).desc
+                    }
+                  </span>
+                </div>
+              )}
             </div>
 
             <div className="row">
