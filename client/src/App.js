@@ -16,7 +16,7 @@ import DataTable from './components/dataset/DataTable';
 import Chart from 'react-google-charts';
 
 import Home from './components/pages/Home';
-import AlgorithmPage from './components/pages/Algorithm';
+import AlgorithmPage from './components/pages/AlgorithmPage';
 import DataPage from './components/pages/DataPage';
 
 import { accountAuth } from './actions/account';

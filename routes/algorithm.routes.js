@@ -1,7 +1,9 @@
 const { Router } = require('express');
 const router = Router();
+const { body } = require('express-validator');
 const { spawn } = require('child_process');
 const db = require('../connection');
+const error = require('../middleware/error.middleware');
 
 // GET 'api/algorithm/list'
 router.get(
@@ -38,39 +40,56 @@ router.get(
   }
 );
 
-
-
-
-// GET 'api/algorithm/{id}/execute'
-router.get('/:algorithmLink/execute',
-  async (req, res) => {
+// GET 'api/algorithm/execute'
+router.post(
+  '/execute',
+  [ 
+    body('id').isInt(),
+    body('data').isArray(), 
+  ],
+  error,
+  async(req, res) => {
     try {
-      const { algorithmLink } = req.params,
-            fileLocation = `./python_modules/${algorithmLink}/__init__.py`,
-            python = spawn('python', [fileLocation]),
-            dataInput = JSON.parse(req.headers.data);
+      const { id } = req.body;
+      const query = require('../sql/algo_execute');
 
-      python.stdin.write(JSON.stringify(dataInput));
+      const fileName = await db.one(query, id)
+        .then((data) => data.link)
+        .catch((error) => ({ error }));
+      if (fileName.error) {
+        return res.status(500).json({ msg: 'Алгоритм не найден!' });
+      }
+
+      const fileLocation = `./python_modules/${fileName}/__init__.py`;
+      const python = spawn('python', [fileLocation]);
+      const { data } = req.body;
+
+      python.stdin.write(JSON.stringify({ data, forward: 10 }));
       python.stdin.end();
 
-      dataString = '';
-
+      resultStr = '';
       python.stdout.on('data', (data) => {
-        dataString += data.toString();
+        resultStr += data.toString();
       });
+
       python.on('close', (code) => {
-        if (code !== 0) return res.status(500).json({ msg: `Ошибка выполенния! ${code}, ${dataString}`});
-        let data;
+        if (code !== 0) {
+          console.log(resultStr);
+          return res.status(500).json({ 
+            msg: `Ошибка выполенния! Код ошибки: ${code}`
+          });
+        }
+
         try {
-          data = JSON.parse(dataString);
+          let data = JSON.parse(resultStr);
           return res.status(200).json({ data, code });
-        } catch(e) {
-          return res.status(500).json({ msg: 'Ошибка выполенния!', error: e, dataString })
+        } catch(error) {
+          console.log(resultStr);
+          return res.status(500).json({ msg: 'Ошибка выполенния!', error, });
         }
       });
     } catch(error) {
-      console.log(error)
-      return res.status(500).json({ msg: 'Ошибка выполенния!' });
+      return res.status(500).json({ msg: 'Ошибка!', error });
     }
   }
 );

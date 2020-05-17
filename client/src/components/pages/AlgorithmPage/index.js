@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import DatasetList from '../../dataset/DatasetList';
+import Executer from '../../algorithm/Executer';
 import { algoGetInfo } from '../../../functions/algorithm';
 import styles from './styles.module.css';
 
@@ -43,6 +44,13 @@ const AlgorithmPage = ({ ...props }) => {
               <div className={styles.dataListWrapper}>
                 <DatasetList wrapped={true} />
               </div> 
+            </div>
+          </div>
+
+          <div className="col-12 col-md-6">
+            <div className="card card-body border-primary">
+              <h2 className="mb-3">Execute</h2>
+              <Executer id={algo.id}/>
             </div>
           </div>
 

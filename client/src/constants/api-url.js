@@ -6,6 +6,7 @@ export const ACCOUNT_REG = '/api/account/register';
 // ALGORITHM
 export const ALGO_LIST = '/api/algorithm/list';
 export const ALGO_ONE = '/api/algorithm/info';
+export const ALGO_EXECUTE = '/api/algorithm/execute';
   
 // FINHUB
 export const FINHUB_SYMBOL = 'https://finnhub.io/api/v1/stock/symbol?exchange=US&token=bql6il7rh5ra8kpl6eg0';
