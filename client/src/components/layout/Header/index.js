@@ -51,6 +51,9 @@ const Header = ({ isAuth, email, openLogin, openReg, accountLogout }) => {
               <li className="nav-item">
                 <NavLink className="nav-link" exact to="/datasets">My Datasets</NavLink>
               </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" exact to="/resultsets">My Results</NavLink>
+              </li>
             </ul>
             <ul className="navbar-nav ml-auto align-items-center">
               {!isAuth ? unauthLinks : authLinks}

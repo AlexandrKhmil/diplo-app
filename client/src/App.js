@@ -18,6 +18,7 @@ import Chart from 'react-google-charts';
 import Home from './components/pages/Home';
 import AlgorithmPage from './components/pages/AlgorithmPage';
 import DataPage from './components/pages/DataPage';
+import ResultPage from './components/pages/ResultPage';
 
 import { accountAuth } from './actions/account';
 import { closeLogin, closeReg, tableClose, candleClose } from './actions/modal';
@@ -126,6 +127,7 @@ const App = ({
           <Route exact path="/" component={Home} />
           <Route path="/algorithm/:link" component={AlgorithmPage} />
           <Route path="/datasets/" component={DataPage} />
+          <Route path="/resultsets/" component={ResultPage} />
         </Switch>
 
       </Router>

@@ -45,6 +45,10 @@ const DatasetList = ({
             key={dataset.id}>
 
             <div className="d-flex flex-wrap flex-md-column mb-3 mb-md-0">
+            <div className="ml-3 ml-md-0">
+                <span className="font-weight-bold">ID: </span> 
+                <span>{dataset.id}</span>
+              </div>
               <div className="ml-3 ml-md-0">
                 <span className="font-weight-bold">Loaded: </span> 
                 <span>{timestampToDateTime(dataset.meta.loaded)}</span>

@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const router = Router();
+const shortid = require('shortid');
 const { body } = require('express-validator');
 const { spawn } = require('child_process');
 const db = require('../connection');
@@ -53,13 +54,14 @@ router.post(
       const { id } = req.body;
       const query = require('../sql/algo_execute');
 
-      const fileName = await db.one(query, id)
-        .then((data) => data.link)
+      const result = await db.one(query, id)
+        .then((data) => data)
         .catch((error) => ({ error }));
-      if (fileName.error) {
+      if (result.error) {
         return res.status(500).json({ msg: 'Алгоритм не найден!' });
       }
 
+      const fileName = result.link;
       const fileLocation = `./python_modules/${fileName}/__init__.py`;
       const python = spawn('python', [fileLocation]);
       const { data } = req.body;
@@ -82,7 +84,15 @@ router.post(
 
         try {
           let data = JSON.parse(resultStr);
-          return res.status(200).json({ data, code });
+          return res.status(200).json({
+            id: shortid.generate(), 
+            data, 
+            meta: {
+              loaded: parseInt(new Date().getTime() / 1000),
+              algorithm: result.title,
+            },
+            code, 
+          });
         } catch(error) {
           console.log(resultStr);
           return res.status(500).json({ msg: 'Ошибка выполенния!', error, });

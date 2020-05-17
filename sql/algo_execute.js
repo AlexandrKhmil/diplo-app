@@ -1,5 +1,5 @@
 module.exports = `
-  SELECT link
+  SELECT title, link
   FROM algorithm
   WHERE id = $1;
 `;
