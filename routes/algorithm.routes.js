@@ -1,24 +1,25 @@
+const { spawn } = require('child_process');
 const { Router } = require('express');
 const router = Router();
-const shortid = require('shortid');
 const { body } = require('express-validator');
-const { spawn } = require('child_process');
+const shortid = require('shortid');
+
 const db = require('../connection');
-const error = require('../middleware/errorHandler.middleware');
+const sqlAlgo = require('../sql/algorithm');
+
+const errorHandler = require('../middleware/errorHandler.middleware');
+
+const errorTypes = require('../constants/errors');
 
 // GET 'api/algorithm/list'
 router.get(
   '/list',
   async (req, res) => {
     try {
-      const query = require('../sql/algo_list');
-      db.any(query)
-        .then((data) =>  res.status(200).json(data))
-        .catch((error) => {
-          res.status(500).json({ msg: 'Ошибка получения списка!', error });
-        });
-    } catch (error) {
-      return res.status(500).json({ msg: 'Ошибка получения списка!', error });
+      const result = await db.any(sqlAlgo.GET_LIST);
+      return res.status(200).json(result);
+    } catch (err) {
+      return res.status(500).json({ msg: errorTypes.ALGO_LIST_ERROR });
     }
   }
 );
@@ -29,14 +30,10 @@ router.get(
   async (req, res) => {
     try {
       const { link } = req.headers;
-      const query = require('../sql/algo_one.js');
-      db.one(query, link)
-        .then((data) =>  res.status(200).json(data))
-        .catch((error) => {
-          res.status(500).json({ msg: 'Ошибка получения списка!', error });
-        });
-    } catch (error) {
-      return res.status(500).json({ msg: 'Ошибка получения списка!', error });
+      const result = await db.one(sqlAlgo.GET_ONE, link);
+      return res.status(200).json(result);
+    } catch (err) {
+      return res.status(500).json({ msg: errorTypes.ALGO_ONE_ERROR });
     }
   }
 );
@@ -45,61 +42,62 @@ router.get(
 router.post(
   '/execute',
   [ 
-    body('id').isInt(),
-    body('data').isArray(), 
+    body('id', errorTypes.ALGO_ID_ERROR).isInt(),
+    body('data', errorTypes.ALGO_DATA_ERROR).isArray(), 
   ],
-  error,
+  errorHandler,
   async(req, res) => {
     try {
-      const { id } = req.body;
-      const query = require('../sql/algo_execute');
+      const { id, data } = req.body;
 
-      const result = await db.one(query, id)
-        .then((data) => data)
-        .catch((error) => ({ error }));
-      if (result.error) {
-        return res.status(500).json({ msg: 'Алгоритм не найден!' });
+      const result = await db.one(sqlAlgo.GET_FILE, id)
+        .catch((err) => err);
+      if (result instanceof Error) {
+        return res.status(500).json({ msg: errorTypes.ALGO_ONE_ERROR });
       }
 
-      const fileName = result.link;
-      const fileLocation = `./python_modules/${fileName}/__init__.py`;
-      const python = spawn('python', [fileLocation]);
-      const { data } = req.body;
-
-      python.stdin.write(JSON.stringify({ data, forward: 10 }));
-      python.stdin.end();
-
-      resultStr = '';
-      python.stdout.on('data', (data) => {
-        resultStr += data.toString();
+      return res.status(200).json({
+        id: shortid.generate(), 
+        data, 
+        meta: {
+          loaded: parseInt(new Date().getTime() / 1000),
+          algorithm: result.title,
+        },
+        code: 0, 
       });
 
-      python.on('close', (code) => {
-        if (code !== 0) {
-          console.log(resultStr);
-          return res.status(500).json({ 
-            msg: `Ошибка выполенния! Код ошибки: ${code}`
-          });
-        }
+      // const fileName = result.link;
+      // const fileLocation = `./python_modules/${fileName}/__init__.py`;
+      // const python = spawn('python', [fileLocation]);
+      // const { data } = req.body;
 
-        try {
-          let data = JSON.parse(resultStr);
-          return res.status(200).json({
-            id: shortid.generate(), 
-            data, 
-            meta: {
-              loaded: parseInt(new Date().getTime() / 1000),
-              algorithm: result.title,
-            },
-            code, 
-          });
-        } catch(error) {
-          console.log(resultStr);
-          return res.status(500).json({ msg: 'Ошибка выполенния!', error, });
-        }
-      });
-    } catch(error) {
-      return res.status(500).json({ msg: 'Ошибка!', error });
+      // python.stdin.write(JSON.stringify({ data, forward: 10 }));
+      // python.stdin.end();
+
+      // resultStr = '';
+      // python.stdout.on('data', (data) => {
+      //   resultStr += data.toString();
+      // });
+
+      // python.on('close', (code) => {
+      //   if (code !== 0) {
+      //     return res.status(500).json({ msg: errorTypes.ALGO_EXECUTE_ERROR });
+      //   }
+
+      //   let data = JSON.parse(resultStr);
+      //   return res.status(200).json({
+      //     id: shortid.generate(), 
+      //     data, 
+      //     meta: {
+      //       loaded: parseInt(new Date().getTime() / 1000),
+      //       algorithm: result.title,
+      //     },
+      //     code, 
+      //   });
+      // });
+    } catch(err) {
+      console.log(err)
+      return res.status(500).json({ msg: errorTypes.ALGO_EXECUTE_ERROR });
     }
   }
 );
