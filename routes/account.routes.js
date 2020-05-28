@@ -2,27 +2,34 @@ const { Router } = require('express');
 const router = Router();
 const { body } = require('express-validator');
 const bcrypt = require('bcryptjs');
+
 const db = require('../connection');
-const account = require('../middleware/account.middleware');
-const error = require('../middleware/error.middleware');
+const sqlAccount = require('../sql/account');
+
+const tokenHandler = require('../middleware/tokenHandler.middleware');
+const errorHandler = require('../middleware/errorHandler.middleware');
+
 const signToken = require('../functions/signToken');
+
+const errorTypes = require('../constants/errors');
 
 // GET 'api/account/auth'
 router.get(
   '/auth', 
-  account,
+  tokenHandler,
   async (req, res) => {
     try {
       const { id } = req.token;
-      const query = require('../sql/account_auth');
 
-      db.one(query, id)
-        .then((data) => res.status(200).json(data))
-        .catch((error) => {
-          return res.status(500).json({ msg: 'Пользователь отсутствует!' });
-        });
+      const result = await db.one(sqlAccount.SELECT_EMAIL_BY_ID, id)
+        .catch((err) => err);
+      if (result instanceof Error) {
+        return res.status(500).json({ msg: errorTypes.USER_NOT_FOUND });
+      }
+
+      return res.status(200).json(data);
     } catch (error) {
-      return res.status(500).json({ msg: 'Ошибка авторизации!' });
+      return res.status(500).json({ msg: errorTypes.AUTH_ERROR });
     }
   }
 );
@@ -31,32 +38,30 @@ router.get(
 router.post(
   '/login', 
   [
-    body('email', 'Некорректный email!').normalizeEmail().isEmail(),
-    body('password', 'Некорректный пароль!').isLength({ min: 5 })
+    body('email', errorTypes.EMAIL_ERROR).normalizeEmail().isEmail(),
+    body('password', errorTypes.PASSWORD_ERROR).isLength({ min: 5 }),
   ],
-  error,
+  errorHandler,
   async (req, res) => {
     try {
       const { email, password } = req.body;
-      const query = require('../sql/account_login');
 
-      const result = await db.one(query, email)
-        .then((data) => data)
-        .catch((error) => ({ error }));
-      if (result.error) {
-        return res.status(500).json({ msg: 'Пользователь отсутствует!' });
+      const result = await db.one(sqlAccount.SELECT_BY_EMAIL, email)
+        .catch((err) => err);
+      if (result instanceof Error) {
+        return res.status(500).json({ msg: errorTypes.USER_NOT_FOUND });
       }
 
       const isMatch = await bcrypt.compare(password, result.password);
       if (!isMatch) {
-        return res.status(500).json({ msg: 'Неверный пароль!' });
+        return res.status(500).json({ msg: errorTypes.PASSWORD_UNMATCH });
       }
 
       const token = signToken(result.id);
 
       return res.status(200).json({ token, email });
-    } catch(e) {
-      return res.status(500).json({ msg: "Ошибка авторизации!" });
+    } catch(err) {
+      return res.status(500).json({ msg: errorTypes.AUTH_ERROR });
     }
   }
 );
@@ -65,27 +70,27 @@ router.post(
 router.post(
   '/register', 
   [
-    body('email', 'Wrong email').normalizeEmail().isEmail(),
-    body('password', 'Wrong password').isLength({ min: 5 }),
+    body('email', errorTypes.EMAIL_ERROR).normalizeEmail().isEmail(),
+    body('password', errorTypes.PASSWORD_ERROR).isLength({ min: 5 }),
   ],
-  error,
+  errorHandler,
   async (req, res) => {
     try {
       const { email, password } = req.body; 
       const hashedPassword = await bcrypt.hash(password, 12);
       
-      db.func('account_add_func', [email, hashedPassword])
-        .then((data) => {
-          const token = signToken(data[0].account_add_func);
-          res.status(200).json({ token, email });
-        })
-        .catch((error) => {
-          res.status(500).json({ 
-            msg: "Пользователь с таким email уже существует!", 
-          });
-        });
+      const result = await db.func(sqlAccount.FUNC_ADD, [email, hashedPassword])
+        .then((data) => data[0][sqlAccount.FUNC_ADD])
+        .catch((err) => err);
+      if (result instanceof Error) {
+        return res.status(500).json({ msg: errorTypes.EMAIL_EXISTS });
+      }
+
+      const token = signToken(result);
+
+      return res.status(200).json({ token, email });
     } catch (err) {
-      return res.status(500).json({ msg: "Ошибка регистрации!" });
+      return res.status(500).json({ msg: errorTypes.REG_ERROR });
     }
   }
 );

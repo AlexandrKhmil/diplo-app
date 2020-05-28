@@ -4,7 +4,7 @@ const shortid = require('shortid');
 const { body } = require('express-validator');
 const { spawn } = require('child_process');
 const db = require('../connection');
-const error = require('../middleware/error.middleware');
+const error = require('../middleware/errorHandler.middleware');
 
 // GET 'api/algorithm/list'
 router.get(
