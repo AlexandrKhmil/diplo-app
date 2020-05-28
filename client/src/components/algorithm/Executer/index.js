@@ -5,7 +5,23 @@ import { algoExecute } from '../../../actions/algorithm';
 
 const Executer = ({ id, fieldList, algoExecute, dataset }) => {
   const [fieldValues, setFieldValues] = useState(
-    Object.fromEntries(fieldList.map((field) => [field.name, field.type === 'number' ? field.value : '']))
+    Object.fromEntries(fieldList.map((field) => {
+      let value;
+      switch(field.type) {
+        case 'number': {
+          value = field.value;
+          break;
+        }
+        case 'select': {
+          value = 0;
+          break;
+        }
+        default: {
+          value = '';
+        }
+      }
+      return [field.name, value];
+    }))
   );
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -16,7 +32,7 @@ const Executer = ({ id, fieldList, algoExecute, dataset }) => {
       setIsLoading(true);
       const data = Object.fromEntries(Object.entries(fieldValues).map((value) => {
         return fieldList.find((field) => field.name === value[0]).get === 'row' 
-        ? [value[0], dataset.data[value[1]]]
+        ? [value[0], dataset.data.map((row) => row[value[1]])]
         : value;
       }));
       setResult(await algoExecute({ id, data })); 
@@ -43,8 +59,10 @@ const Executer = ({ id, fieldList, algoExecute, dataset }) => {
                     ...fieldValues, 
                     ...{ [field.name]:  e.target.value } 
                   })}
-                  disabled={isLoading || !dataset}>
+                  disabled={isLoading || !dataset}> 
+                  {!dataset && (
                     <option value={null}>Please select a Dataset</option>
+                  )}
                   {field.optionList === 'rows' 
                     ? dataset && dataset.meta.headers.map((header, index) => (
                           <option key={index} value={index}>{header}</option>
@@ -115,11 +133,12 @@ const mapStateToProps = (state) => {
         optionList: 'rows',
         get: 'row',
       },
-      text: {
-        name: 'text',
-        title: 'Select Row',
-        type: 'text',
-        get: 'value',
+      valueRow: {
+        name: 'valueRow',
+        title: 'Select Row to Analyse',
+        type: 'select',
+        optionList: 'rows',
+        get: 'row',
       }
     }
   };
