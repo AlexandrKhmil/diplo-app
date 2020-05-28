@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { CSVLink } from "react-csv";
 import { selectDataset, datasetDelete } from '../../../actions/dataset';
-import { tableOpen, candleOpen } from '../../../actions/modal';
+import { tableOpen, linearOpen, candleOpen } from '../../../actions/modal';
 import { timestampToDateTime } from '../../../functions/timestamp';
 import { datasetListSort } from '../../../functions/dataset';
 import * as sortType from '../../../constants/dataset-list-sort-type';
@@ -16,6 +16,7 @@ const DatasetList = ({
   selectDataset, 
   datasetDelete, 
   tableOpen,
+  linearOpen,
   candleOpen,
   wrapped,
 }) => {
@@ -100,7 +101,17 @@ const DatasetList = ({
                     data: dataset.data,
                     type: dataset.meta.type,
                   })}>
-                  View
+                  Table
+                </button>
+              </div>
+              <div className="col-6 mb-3 col-md-auto mb-3 mb-lg-0">
+                <button 
+                  className="btn btn-outline-info w-100"
+                  onClick={() => linearOpen({
+                    data: [dataset.meta.headers, ...dataset.data],
+                    type: dataset.meta.type,
+                  })}>
+                  Linear
                 </button>
               </div>
               <div className="col-6 mb-3 col-md-auto mb-3 mb-lg-0">
@@ -110,7 +121,7 @@ const DatasetList = ({
                     data: [dataset.meta.headers, ...dataset.data],
                     type: dataset.meta.type,
                   })}>
-                  Chart
+                  Candle
                 </button>
               </div>
               <div className="col-6 col-md-auto">
@@ -145,6 +156,7 @@ const mapDispatchToProps = (dispatch) => ({
   selectDataset: (value) => dispatch(selectDataset(value)),
   datasetDelete: (value) => dispatch(datasetDelete(value)),
   tableOpen: (value) => dispatch(tableOpen(value)),
+  linearOpen: (value) => dispatch(linearOpen(value)),
   candleOpen: (value) => dispatch(candleOpen(value)),
 });
 

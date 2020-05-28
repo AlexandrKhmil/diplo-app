@@ -25,6 +25,15 @@ export const tableClose = () => ({
   type: actionType.MODAL_TABLE_CLOSE,
 });
 
+export const linearOpen = (data) => ({
+  type: actionType.MODAL_LINEAR_OPEN,
+  payload: data,
+});
+
+export const linearClose = (data) => ({
+  type: actionType.MODAL_LINEAR_CLOSE,
+});
+
 export const candleOpen = (data) => ({
   type: actionType.MODAL_CANDLE_OPEN,
   payload: data,

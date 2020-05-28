@@ -21,7 +21,7 @@ import DataPage from './components/pages/DataPage';
 import ResultPage from './components/pages/ResultPage';
 
 import { accountAuth } from './actions/account';
-import { closeLogin, closeReg, tableClose, candleClose } from './actions/modal';
+import { closeLogin, closeReg, tableClose, linearClose, candleClose } from './actions/modal';
 import { timestampToDateTime } from './functions/timestamp';
 
 import * as colType from './constants/dataset-column-type';
@@ -43,6 +43,10 @@ const App = ({
   tableData,
   tableType,
 
+  linearStatus,
+  linearData,
+  linearClose,
+
   candleStatus,
   candleClose,
   candleData,
@@ -53,6 +57,21 @@ const App = ({
     transition: transitions.FADE,
     containerStyle: {
       zIndex: 1070
+    },
+  };
+
+  const linearOptions = {
+    title: "Company Performance",
+    curveType: "function",
+    legend: 'none',
+    bar: { groupWidth: '100%' },
+    chartArea: {
+      left: window.innerWidth <= 760 ? 30 : 50,
+      top: 10, 
+      bottom: 40,
+      right: 10,
+      width:'100%',
+      height:'100%'
     },
   };
   
@@ -80,23 +99,19 @@ const App = ({
   return (
     <AlertProvider template={AlertTemplate} {...alertOptions}>
       <Router>
-
         <Header />
-
         <Modal
           title="Login"
           status={loginIsOpen}
           close={closeLogin}>
           <Login />
         </Modal>
-
         <Modal
           title="Registration"
           status={regIsOpen}
           close={closeReg}>
           <Registration />
         </Modal>
-
         <Modal
           title="Dataset"
           status={tableIsOpen}
@@ -106,7 +121,18 @@ const App = ({
             data={tableData}
             type={tableType} />
         </Modal>
-
+        <Modal
+          status={linearStatus}
+          title="Linear Chart"
+          close={linearClose}>
+          <Chart
+            chartType="LineChart"
+            width={'calc(80vw - 60px)'}
+            height={'80vh'}
+            data={linearData}
+            options={linearOptions}
+            loader={<div>Loading Chart</div>} />
+        </Modal>
         <Modal
           status={candleStatus}
           title="Candle Chart"
@@ -120,9 +146,7 @@ const App = ({
             options={candleOptions}
             rootProps={{ 'data-testid': '1' }} />
         </Modal>
-
         <Alert />
-
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/algorithm/:link" component={AlgorithmPage} />
@@ -136,6 +160,15 @@ const App = ({
 };
 
 const mapStateToProps = (state) => {
+  const linearType = state.modal.linear.type;
+  const linearState = state.modal.linear.data;
+  const linearData = linearState ? linearState.map((row, rowIndex) => {
+    if (rowIndex === 0) return row;
+    return row.map((item, index) => {
+      return linearType[index] === colType.TIMESTAMP ? timestampToDateTime(item) : item
+    });
+  }) : [];
+
   const candleType = state.modal.candle.type;
   const candleState = state.modal.candle.data;
   const candleData = candleState ? candleState.map((row, rowIndex) => {
@@ -157,6 +190,9 @@ const mapStateToProps = (state) => {
     tableData: state.modal.table.data,
     tableType: state.modal.table.type,
 
+    linearStatus: state.modal.linear.isOpen,
+    linearData,
+
     candleStatus: state.modal.candle.isOpen,
     candleData,
   };
@@ -167,6 +203,7 @@ const mapDispatchToProps = (dispatch) => ({
   closeLogin: () => dispatch(closeLogin()),
   closeReg: () => dispatch(closeReg()),
   tableClose: () => dispatch(tableClose()),
+  linearClose: () => dispatch(linearClose()),
   candleClose: () => dispatch(candleClose()),
 });
 

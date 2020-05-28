@@ -13,6 +13,11 @@ const initialState = {
     data: [],
     type: [],
   },
+  linear: {
+    isOpen: false,
+    data: [],
+    type: [],
+  },
   candle: {
     isOpen: false,
     data: [],
@@ -82,6 +87,29 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         table: {
           ...state.table,
+          isOpen: false,
+        },
+      };
+    }
+
+    // DATASET LINEAR
+    case actionType.MODAL_LINEAR_OPEN: {
+      document.body.setAttribute('style', 'overflow: hidden;');
+      return {
+        ...state,
+        linear: {
+          isOpen: true,
+          data: payload.data,
+          type: payload.type,
+        },
+      };
+    }
+    case actionType.MODAL_LINEAR_CLOSE: {
+      document.body.removeAttribute('style');
+      return {
+        ...state,
+        linear: {
+          ...state.linear,
           isOpen: false,
         },
       };
