@@ -44,7 +44,7 @@ export const loadDataFinhub = ({ symbol, resolution, start, end }) => (dispatch)
         id: shortid.generate(), 
         meta: {
           loaded: parseInt(new Date().getTime() / 1000),
-          headers: ['Date', 'Open', 'Close', 'High', 'Low'],
+          headers: ['Date', 'Low', 'Open', 'Close', 'High'],
           type: [colType.TIMESTAMP, colType.NUMERIC, colType.NUMERIC, colType.NUMERIC, colType.NUMERIC],
           source: sourceType.FINHUB,
           key: 0,
